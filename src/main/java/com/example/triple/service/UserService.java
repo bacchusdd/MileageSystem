@@ -2,10 +2,12 @@ package com.example.triple.service;
 
 import com.example.triple.domain.user.UserRepository;
 import com.example.triple.domain.user.Users;
+import com.example.triple.dto.ReviewRequestDto;
 import com.example.triple.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -20,4 +22,5 @@ public class UserService {
 
         return new UserResponseDto(user);
     }
+
 }
