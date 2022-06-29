@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name="user", indexes = @Index(name = "idxuserId", columnList = "userId"))
+@Table(name="user", indexes = @Index(name = "idx_userId", columnList = "userId"))
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Users {
 
