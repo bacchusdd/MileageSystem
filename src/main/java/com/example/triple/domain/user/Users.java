@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
@@ -19,10 +20,10 @@ public class Users {
 
     @Id
     @GeneratedValue
-    //@GeneratedValue(generator = "uuid2")
-    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
-    //@Column(columnDefinition = "BINARY(16)")
     private String userId;
+
+    @NotNull
+    @Column(name="points")
     private int points;
 
     @Builder
