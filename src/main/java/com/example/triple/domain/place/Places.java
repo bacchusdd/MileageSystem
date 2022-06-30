@@ -10,6 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,13 +21,17 @@ import javax.validation.constraints.NotNull;
 public class Places {
 
     @Id
-    //@GeneratedValue(generator = "uuid2")
+    @Column(name = "placeId")
     //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String placeId;
 
     @NotNull
     @Column(name = "placeCount")
     private int placeCount;
+
+    @OneToMany(mappedBy = "places", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reviews> reviews = new ArrayList<>();
+
 
     @Builder
     public Places(String placeId, int placeCount){
@@ -45,4 +51,5 @@ public class Places {
     public void initCount(int count){
         this.placeCount = count;
     }
+
 }

@@ -48,8 +48,9 @@ public class PlaceService {
 
         }
 
-        else if (dto.getAction().trim().equals("MOD")){
+        else if (dto.getAction().trim().equals("MOD")) {
 
+            /*
             //dto의 reviewId에 저장된 review
             //수정 전
             Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
@@ -76,5 +77,8 @@ public class PlaceService {
 
         }
 
+             */
+
+        }
     }
 }

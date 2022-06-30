@@ -4,6 +4,8 @@ import com.example.triple.domain.place.PlaceRepository;
 import com.example.triple.domain.place.Places;
 import com.example.triple.domain.review.ReviewRepository;
 import com.example.triple.domain.review.Reviews;
+import com.example.triple.domain.reviewphoto.PhotoRepository;
+import com.example.triple.domain.reviewphoto.Photos;
 import com.example.triple.domain.user.UserRepository;
 import com.example.triple.domain.user.Users;
 import com.example.triple.dto.ReviewRequestDto;
@@ -19,6 +21,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
+    private final PhotoRepository photoRepository;
 
     @Transactional
     public void reviewEvent(ReviewRequestDto dto){
@@ -36,9 +39,7 @@ public class ReviewService {
             //만약 해당 장소 첫 리뷰라면
             if (placeRepository.existsByPlaceId(dto.getPlaceId()) == false){
 
-                /** point 처리 **/
-                newReview.increasePoint();
-                newReview.getUsers().increasePoint();
+                firstBonus(newReview);
 
             }
             else{
@@ -78,30 +79,83 @@ public class ReviewService {
 
             /** data 추가 **/
             reviewRepository.save(newReview);
+            photoRepository.saveAll(dto.toEntityPhotoList(newReview));
         }
 
         else if (dto.getAction().trim().equals("MOD")){
 
-            Reviews reviews = reviewRepository.findByReviewId(dto.getReviewId());
+            Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
+            Reviews newReviews = dto.toEntityReviews();
+
+            /** User Point 기존 값으로 초기화 **/
+            newReviews.getUsers().initPoint(users.getPoints());
+            /** Review Point 기존 값으로 초기화 **/
+            newReviews.initPoint();
+
 
             /** point 처리 **/
             //사진 모두 삭제시 -1
             if (dto.getAttachedPhotoIds().size() < 1){
-                reviews.decreasePoint();
-               reviews.getUsers().decreasePoint(1);
+                pastReviews.decreasePoint();
+                //pastReviews.getUsers().decreasePoint(1);
+                users.decreasePoint(1);
+                photoRepository.deleteInBatch(photoRepository.findAllByReviews_reviewId(dto.getReviewId()));
             }
 
             //기존에 사진 없는 경우에 사진 추가시 +1
-            if (dto.getAttachedPhotoIds().size() > 0 && dto.toEntityReviews().getPoint() < 2){
-                reviews.increasePoint();
-                reviews.getUsers().increasePoint();
+            if (dto.getAttachedPhotoIds().size() > 0 && photoRepository.existsByReviews_reviewId(pastReviews.getReviewId()) == false){
+                pastReviews.increasePoint();
+                //pastReviews.getUsers().increasePoint();
+                users.increasePoint();
             }
 
-            /** data 수정 **/
-            //reviews.update(dto.getContent(), dto.getUserId(), dto.getPlaceId());
-            //reviews.update(dto.getContent(), dto.getPlaceId());
-            reviews.update(dto.getContent(), dto.toEntityPlaces());
+
+            /** place data 수정 **/
+            //place 바뀌었다면 새로 지정
+            if (pastReviews.getPlaces().getPlaceId() != dto.getPlaceId()){
+                //기존 place -1
+                pastReviews.getPlaces().decreaseCount();
+
+                //new place가 새로운 place라면
+                if (placeRepository.existsByPlaceId(dto.getPlaceId()) == false) {
+
+                    /** 첫리뷰 보너스 point **/
+                    if (pastReviews.getPoint() < 3) {
+                        firstBonus(pastReviews);
+                    }
+
+                    //placeRepository.save(new Places(dto.getPlaceId(), 1));
+
+                }
+                else {
+
+                    Places places = placeRepository.findByPlaceId(dto.getPlaceId());
+
+                    /** PlaceCount 기존 값으로 초기화 **/
+                    newReviews.getPlaces().initCount(places.getPlaceCount());
+
+                    /** count 처리 **/
+                    newReviews.getPlaces().increaseCount();
+
+                }
+            }
+            //place가 같다면 기존 값으로 초기화
+            else{
+                Places places = placeRepository.findByPlaceId(dto.getPlaceId());
+                /** PlaceCount 기존 값으로 초기화 **/
+                newReviews.getPlaces().initCount(places.getPlaceCount());
+            }
+
+
+            /** data 업데이트 **/
+            if (dto.toEntityPhotoList(newReviews).size() != 0) {
+                photoRepository.saveAll(dto.toEntityPhotoList(newReviews));
+            }
+
+            Reviews reviews = reviewRepository.getOne(dto.getReviewId());
+            reviews.update(newReviews.getContent(), newReviews.getPlaces());
         }
+
 
         else if (dto.getAction().trim().equals("DELETE")){
 
@@ -116,5 +170,12 @@ public class ReviewService {
             reviewRepository.delete(reviews);
 
         }
+    }
+
+    public void firstBonus(Reviews reviews){
+
+        /** 새로운 place point 처리 **/
+        reviews.increasePoint();
+        reviews.getUsers().increasePoint();
     }
 }

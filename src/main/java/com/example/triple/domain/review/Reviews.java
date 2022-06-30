@@ -54,7 +54,6 @@ public class Reviews {
     @JoinColumn(name = "placeId", referencedColumnName = "placeId", columnDefinition="VARCHAR(36)")
     private Places places;
 
-
     /*
     @Builder
     public Reviews(String reviewId, String content, String userId, String placeId, int point){

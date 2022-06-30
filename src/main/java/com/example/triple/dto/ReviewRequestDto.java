@@ -41,32 +41,32 @@ public class ReviewRequestDto {
         return Reviews.builder()
                 .reviewId(reviewId)
                 .content(content)
-                //.userId(userId)
                 .users(new Users(userId, Integer.MAX_VALUE))
-                //.placeId(placeId)
                 .places(new Places(placeId, 1))
                 .point(0)
                 .build();
     }
 
+    /*
     public Places toEntityPlaces(){
         return Places.builder()
                 .placeId(placeId)
                 .placeCount(1)
                 .build();
     }
+     */
 
-    public List<Photos> toEntityPhotoList() {
+    public List<Photos> toEntityPhotoList(Reviews reviews) {
 
         List<Photos> newPhotos = new ArrayList<>();
 
         for (String ids : attachedPhotoIds) {
             //Photos photos = new Photos(ids, reviewId);
-            //newPhotos.add(photos);
-            Photos.builder()
-                    .attachedPhotoId(ids)
-                    .reviewId(reviewId)
-                    .build();
+            Photos photos = Photos.builder()
+                            .attachedPhotoId(ids)
+                            .reviews(reviews)
+                            .build();
+            newPhotos.add(photos);
         }
 
         return newPhotos;

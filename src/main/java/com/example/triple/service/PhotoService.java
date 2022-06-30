@@ -19,6 +19,7 @@ public class PhotoService {
     @Transactional
     public void reviewEvent(ReviewRequestDto dto){
 
+        /*
         if (dto.getAction().trim().equals("ADD")){
 
             photoRepository.saveAll(dto.toEntityPhotoList());
@@ -41,6 +42,7 @@ public class PhotoService {
             photoRepository.deleteInBatch(photoRepository.findAllByReviewId(dto.getReviewId()));
 
         }
+        */
     }
 
 }
