@@ -36,7 +36,7 @@ public class ReviewApiController {
 
         System.out.println(dto.getType().trim());
         if(dto.getType().trim().equals("REVIEW")){
-            System.out.println(dto.toString());
+            //System.out.println(dto.toString());
 
             //review data 처리, point 처리
             reviewService.reviewEvent(dto);

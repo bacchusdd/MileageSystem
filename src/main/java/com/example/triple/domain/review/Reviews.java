@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -23,8 +24,8 @@ public class Reviews {
 
     @Id
     @Column(name = "reviewId")
-    @GeneratedValue(generator="uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    //@GeneratedValue(generator="uuid2")
+    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String reviewId;
 
     @NotNull
@@ -35,9 +36,9 @@ public class Reviews {
     //@Column(name = "userId")
     //private String userId;
 
-    @NotNull
-    @Column(name = "placeId")
-    private String placeId;
+    //@NotNull
+    //@Column(name = "placeId")
+    //private String placeId;
 
     @NotNull
     @Column(name = "point")
@@ -45,10 +46,16 @@ public class Reviews {
 
     //user 1 : review many
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 
-/*
+    //user 1 : review many
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "placeId", referencedColumnName = "placeId", columnDefinition="VARCHAR(36)")
+    private Places places;
+
+
+    /*
     @Builder
     public Reviews(String reviewId, String content, String userId, String placeId, int point){
         this.reviewId = reviewId;
@@ -65,17 +72,24 @@ public class Reviews {
     }
 */
     @Builder
-    public Reviews(String reviewId, String content, Users users, String placeId, int point) {
+    public Reviews(String reviewId, String content, Users users, Places places, int point) {
         this.reviewId = reviewId;
         this.content = content;
-        this.placeId = placeId;
+        this.places = places;
         this.point = point;
         this.users = users;
     }
 
+    /*
     public void update(String content, String placeId) {
         this.content = content;
         this.placeId = placeId;
+    }
+     */
+
+    public void update(String content, Places places){
+        this.content = content;
+        this.places = places;
     }
 
     public void increasePoint(){

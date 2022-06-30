@@ -1,5 +1,7 @@
 package com.example.triple.service;
 
+import com.example.triple.domain.review.ReviewRepository;
+import com.example.triple.domain.review.Reviews;
 import com.example.triple.domain.user.UserRepository;
 import com.example.triple.domain.user.Users;
 import com.example.triple.dto.ReviewRequestDto;
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     // find user-data by userId
     public UserResponseDto findUser (String userId){

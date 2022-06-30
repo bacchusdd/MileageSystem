@@ -23,27 +23,27 @@ public class PlaceService {
     @Transactional
     public void reviewEvent(ReviewRequestDto dto){
 
-
         if (dto.getAction().trim().equals("ADD")){
 
             if (placeRepository.existsByPlaceId(dto.getPlaceId()) == false){
-                placeRepository.save(dto.toEntityPlaces());
+                //placeRepository.save(dto.toEntityPlaces());
 
                 /** point 처리 **/
                 /** 첫 리뷰 **/
-                Users users = userRepository.findByUserId(dto.getUserId());
-                users.increasePoint();
+                //Users users = userRepository.findByUserId(dto.getUserId());
+                //users.increasePoint();
             }
             else{
                 Places places = placeRepository.findByPlaceId(dto.getPlaceId());
 
-                if (places.getPlaceCount() == 0){
-                    /** point 처리 **/
-                    /** 첫 리뷰 **/
-                    Users users = userRepository.findByUserId(dto.getUserId());
-                    users.increasePoint();
-                }
-                places.increaseCount();
+                //if (places.getPlaceCount() == 0){
+                //    /** point 처리 **/
+                //    /** 첫 리뷰 **/
+                //    Users users = userRepository.findByUserId(dto.getUserId());
+                //    users.increasePoint();
+                //}
+
+                //places.increaseCount();
             }
 
         }
@@ -53,10 +53,11 @@ public class PlaceService {
             //dto의 reviewId에 저장된 review
             //수정 전
             Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
-            Places pastPlaces = placeRepository.findByPlaceId(pastReviews.getPlaceId());
+            //Places pastPlaces = placeRepository.findByPlaceId(pastReviews.getPlaceId());
+            Places pastPlaces = pastReviews.getPlaces();
             Places newPlaces = placeRepository.findByPlaceId(dto.getPlaceId());
 
-            if (pastReviews.getPlaceId() != dto.getPlaceId()){
+            if (pastReviews.getPlaces().getPlaceId() != dto.getPlaceId()){
                 //장소 변경
                 //기존 place -1
                 pastPlaces.decreaseCount();

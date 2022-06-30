@@ -19,8 +19,8 @@ import javax.validation.constraints.NotNull;
 public class Places {
 
     @Id
-    @GeneratedValue(generator="uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    //@GeneratedValue(generator = "uuid2")
+    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String placeId;
 
     @NotNull
@@ -40,5 +40,9 @@ public class Places {
         if (placeCount > 0) {
             this.placeCount -= 1;
         }
+    }
+
+    public void initCount(int count){
+        this.placeCount = count;
     }
 }

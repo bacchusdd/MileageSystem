@@ -43,7 +43,8 @@ public class ReviewRequestDto {
                 .content(content)
                 //.userId(userId)
                 .users(new Users(userId, Integer.MAX_VALUE))
-                .placeId(placeId)
+                //.placeId(placeId)
+                .places(new Places(placeId, 1))
                 .point(0)
                 .build();
     }
