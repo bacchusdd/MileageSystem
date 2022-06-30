@@ -1,6 +1,11 @@
 # triple-mileage
 Assignment for 2022 TRIPLE BE recruitment
 
+* 트리플 여행자 클럽 마일리지 서비스
+  트리플 사용자들이 장소에 리뷰를 작성할 때 포인트 부여,
+  전체/개인에 대한 포인트 부여 히스토리와
+  개인별 누적 포인트 관리
+  
 ## 1. 개발환경
 * Java
 * Springboot
@@ -29,6 +34,7 @@ Assignment for 2022 TRIPLE BE recruitment
 
 ## 4. API 상세 설명
 |DOMAIN|METHOD|URI|Description|
+|---------|------|--------------------|--------------------------------------------|
 | Reviews | POST | /events | action에 따라 리뷰, 포인트 처리 |
 | Users | GET | /users/point/{userId} | 해당 user의 현재 총 point 조회 |
 | PointHistories | GET | /points/userHistory/{userId} | 해당 user의 총 point history 조회 |
