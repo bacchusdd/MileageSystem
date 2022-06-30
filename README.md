@@ -1,13 +1,11 @@
 # triple-mileage
-Assignment for 2022 TRIPLE BE recruitment
+*Assignment for 2022 TRIPLE BE recruitment*
 
 **트리플 여행자 클럽 마일리지 서비스**
 
-트리플 사용자들이 장소에 리뷰를 작성할 때 포인트 부여,
-  
-전체/개인에 대한 포인트 부여 히스토리와
-  
-개인별 누적 포인트 관리
+> 트리플 사용자들이 장소에 리뷰를 작성할 때 포인트 부여,  
+> 전체/개인에 대한 포인트 부여 히스토리와
+> 개인별 누적 포인트 관리
   
   
 ## 1. 개발환경
@@ -16,6 +14,8 @@ Assignment for 2022 TRIPLE BE recruitment
 * JPA
 * MySQL
 * Swagger-ui
+
+
 
 ## 2. 요구사항
 * Review event 처리
@@ -26,15 +26,21 @@ Assignment for 2022 TRIPLE BE recruitment
       * 보너스 점수 : 해당 장소의 첫 리뷰일 경우 1점
       * 포인트 수정될 때마다 이력이 남아야 함
       
+  
+      
 * 포인트 조회
   * 개인 누적 포인트 조회
   * 개인 포인트 히스토리 조회
   * 전체 포인트 히스토리 조회
+  
+  
 
 ## 3. DB
 * 테이블
 * 관계성
 * ERD
+
+
 
 ## 4. API 상세 설명
 |DOMAIN|METHOD|URI|Description|
@@ -44,12 +50,15 @@ Assignment for 2022 TRIPLE BE recruitment
 | PointHistories | GET | /points/userHistory/{userId} | 해당 user의 총 point history 조회 |
 | PointHistories | GET | /points/allHistory | 모든 point history 조회, paging 방식 |
 
+
 ### "/events"
 ### "/users/point/{userId}"
 ### "/points/userHistory/{userId}"
 ### "/points/allHistory"
 
+
 ## 5. 작동 방법
 * Springboot project run
 * Test
-  * http://localhost:8080/swagger-ui.html
+  * http://localhost:8080/swagger-ui.html로 접속
+  * 
