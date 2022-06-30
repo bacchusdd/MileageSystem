@@ -1,6 +1,7 @@
 package com.example.triple.domain.review;
 
 import com.example.triple.domain.place.Places;
+import com.example.triple.domain.reviewphoto.Photos;
 import com.example.triple.domain.user.Users;
 import com.example.triple.dto.ReviewRequestDto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -45,14 +46,17 @@ public class Reviews {
     private int point;
 
     //user 1 : review many
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 
     //user 1 : review many
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "placeId", referencedColumnName = "placeId", columnDefinition="VARCHAR(36)")
     private Places places;
+
+    @OneToMany(mappedBy = "reviews", cascade = CascadeType.REMOVE)
+    private List<Photos> photos;
 
     /*
     @Builder
@@ -86,9 +90,10 @@ public class Reviews {
     }
      */
 
-    public void update(String content, Places places){
+    public void update(String content, Places places, int point){
         this.content = content;
         this.places = places;
+        this.point = point;
     }
 
     public void increasePoint(){
@@ -103,6 +108,11 @@ public class Reviews {
 
     public void initPoint(){
         this.point = 0;
+    }
+
+    public void setNull(){
+        this.users = null;
+        this.places = null;
     }
 
 

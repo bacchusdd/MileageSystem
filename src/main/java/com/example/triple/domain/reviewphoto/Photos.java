@@ -35,4 +35,6 @@ public class Photos {
         this.attachedPhotoId = attachedPhotoId;
         this.reviews = reviews;
     }
+
+
 }

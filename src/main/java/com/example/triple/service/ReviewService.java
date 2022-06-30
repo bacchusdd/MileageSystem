@@ -37,7 +37,7 @@ public class ReviewService {
         UserResponseDto userDto = userService.findUser(dto.getUserId());
         Users users = userDto.toEntity();
 
-        Reviews reviews = dto.toEntityReviews(users.getPoints());
+        Reviews reviews = dto.toEntityReviews(users.getPoints(), 0);
 
         //해당 place에 review 작성 이력 있는지 확인
         if (reviewRepository.existsByUsers_userIdAndPlaces_placeId(users.getUserId(), dto.getPlaceId()) == false) {
@@ -80,7 +80,7 @@ public class ReviewService {
             }
 
             //사진 추가시
-            if (dto.getAttachedPhotoIds().size() > 1){
+            if (dto.getAttachedPhotoIds().size() > 0){
                 reviews.increasePoint();
 
                 //history 저장
@@ -111,22 +111,21 @@ public class ReviewService {
     public String modReview(ReviewRequestDto dto){
         String msg = null;
 
-        UserResponseDto userDto = userService.findUser(dto.getUserId());
-        Users users = userDto.toEntity();
-
-        Reviews reviews = dto.toEntityReviews(users.getPoints());
-
         //해당 reviewId가 존재하는지
         if (reviewRepository.existsByReviewId(dto.getReviewId()) == true){
 
+            UserResponseDto userDto = userService.findUser(dto.getUserId());
+            Users users = userDto.toEntity();
+
             Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
+            Reviews reviews = dto.toEntityReviews(users.getPoints(), pastReviews.getPoint());
 
             /** point 처리 **/
             //이전에 사진 있었으나 사진 아예 삭제한 경우
-            if (photoService.checkReview(dto.getReviewId()) == true && dto.getAttachedPhotoIds().size() < 1){
+            if (photoService.checkReview(dto.getReviewId()) == true && dto.getAttachedPhotoIds() == null){
                 //리뷰 point, 유저 point 모두 -1
-                pastReviews.decreasePoint();
-                users.decreasePoint(1);
+                reviews.decreasePoint();
+                reviews.getUsers().decreasePoint(1);
 
                 //history 저장
                 HistoryRequestDto historyDto = new HistoryRequestDto("photo", "decrease1", dto.getReviewId(), users);
@@ -139,8 +138,8 @@ public class ReviewService {
             //기존에 사진 없는 경우에 사진 추가시 +1
             if (photoService.checkReview(dto.getReviewId()) == false && dto.getAttachedPhotoIds().size() > 0){
                 //리뷰 point, 유저 point 모두 +1
-                pastReviews.increasePoint();
-                users.increasePoint(1);
+                reviews.increasePoint();
+                reviews.getUsers().increasePoint(1);
 
                 //history 저장
                 HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
@@ -159,6 +158,7 @@ public class ReviewService {
 
                 //리뷰에 보너스 점수 부여
                 reviews.increasePoint();
+                reviews.getUsers().increasePoint(1);
 
                 //history 저장
                 HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
@@ -170,6 +170,7 @@ public class ReviewService {
                 if (reviewRepository.countByPlaces_placeId(dto.getPlaceId()) == 0 && historyService.checkType(dto.getReviewId(), "bonus") == false){
                     //보너스 점수 부여
                     reviews.increasePoint();
+                    reviews.getUsers().increasePoint(1);
 
                     //history 저장
                     HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
@@ -177,6 +178,8 @@ public class ReviewService {
                 }
             }
 
+            //pastReviews.update(reviews.getContent(), reviews.getPlaces(), reviews.getPoint());
+            //reviews.update()
 
         }
         else{
@@ -194,27 +197,30 @@ public class ReviewService {
     public String deleteReview(ReviewRequestDto dto){
         String msg = null;
 
-        UserResponseDto userDto = userService.findUser(dto.getUserId());
-        Users users = userDto.toEntity();
-
-        Reviews reviews = dto.toEntityReviews(users.getPoints());
-
-
         //해당 reviewId가 존재하는지
         if (reviewRepository.existsByReviewId(dto.getReviewId()) == true){
 
+            UserResponseDto userDto = userService.findUser(dto.getUserId());
+            Users users = userDto.toEntity();
+
             Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
+            Reviews reviews = dto.toEntityReviews(users.getPoints(), pastReviews.getPoint());
 
             /** user point 처리 **/
-            reviews.getUsers().decreasePoint(pastReviews.getPoint());
+            //reviews.getUsers().decreasePoint(pastReviews.getPoint());
+            users.decreasePoint(pastReviews.getPoint());
 
             /** pointhistory 처리 **/
             //history 저장
             HistoryRequestDto historyDto = new HistoryRequestDto("delete", "decrease" + Integer.toString(pastReviews.getPoint()), dto.getReviewId(), users);
             //historyService.save(historyDto);
 
-            /** data 처리 : review 삭제 */
-            reviewRepository.delete(pastReviews);
+            /** data 처리 : photos, review 삭제 */
+            //if (photoService.checkReview(dto.getReviewId()) == true) {
+            //    photoService.deletePhotos(dto.getReviewId());
+            //}
+
+            reviewRepository.deleteByReviewId(dto.getReviewId());
 
         }
         else{

@@ -7,7 +7,7 @@ public interface ReviewRepository extends JpaRepository<Reviews, String> {
 
     Reviews findByReviewId(String reviewId);
 
-    //Reviews deleteByReviewId(String reviewId);
+    void deleteByReviewId(String reviewId);
 
     boolean existsByUsers_userIdAndPlaces_placeId(@Param(value="userId") String userId, @Param(value = "placeId") String placeId);
     boolean existsByReviewId(String reviewId);
