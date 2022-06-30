@@ -25,20 +25,31 @@ public class Places {
     //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String placeId;
 
-    @NotNull
-    @Column(name = "placeCount")
-    private int placeCount;
+    //@NotNull
+    //@Column(name = "placeCount")
+    //private int placeCount;
 
-    @OneToMany(mappedBy = "places", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reviews> reviews = new ArrayList<>();
+    //@NotNull
+    //@Column(name = "placeCount")
+    //private int placeCount;
+
+    @Column(name = "address", columnDefinition="VARCHAR(36)")
+    //@GeneratedValue(generator = "uuid2")
+    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
+    private String address;
+
+    //@OneToMany(mappedBy = "places", cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<Reviews> reviews = new ArrayList<>();
 
 
     @Builder
-    public Places(String placeId, int placeCount){
+    public Places(String placeId, String address){
         this.placeId = placeId;
-        this.placeCount = placeCount;
+        this.address = address;
+        //this.placeCount = placeCount;
     }
 
+    /*
     public void increaseCount(){
         this.placeCount += 1;
     }
@@ -51,5 +62,6 @@ public class Places {
     public void initCount(int count){
         this.placeCount = count;
     }
+     */
 
 }

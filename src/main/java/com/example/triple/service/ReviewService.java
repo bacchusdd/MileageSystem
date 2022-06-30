@@ -2,13 +2,17 @@ package com.example.triple.service;
 
 import com.example.triple.domain.place.PlaceRepository;
 import com.example.triple.domain.place.Places;
+import com.example.triple.domain.pointhistory.Histories;
 import com.example.triple.domain.review.ReviewRepository;
 import com.example.triple.domain.review.Reviews;
 import com.example.triple.domain.reviewphoto.PhotoRepository;
 import com.example.triple.domain.reviewphoto.Photos;
 import com.example.triple.domain.user.UserRepository;
 import com.example.triple.domain.user.Users;
+import com.example.triple.dto.HistoryRequestDto;
+import com.example.triple.dto.PlaceResponseDto;
 import com.example.triple.dto.ReviewRequestDto;
+import com.example.triple.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,163 +23,208 @@ import javax.transaction.Transactional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
-    private final PlaceRepository placeRepository;
-    private final PhotoRepository photoRepository;
+
+    private final UserService userService;
+    private final PlaceService placeService;
+    private final PhotoService photoService;
+    private final HistoryService historyService;
+
 
     @Transactional
-    public void reviewEvent(ReviewRequestDto dto){
+    public String addReview(ReviewRequestDto dto){
+        String msg = null;
 
-        Users users = userRepository.findByUserId(dto.getUserId());
+        UserResponseDto userDto = userService.findUser(dto.getUserId());
+        Users users = userDto.toEntity();
 
-        if (dto.getAction().trim().equals("ADD")){
+        Reviews reviews = dto.toEntityReviews(users.getPoints());
 
-            Reviews newReview = dto.toEntityReviews();
+        //해당 place에 review 작성 이력 있는지 확인
+        if (reviewRepository.existsByUsers_userIdAndPlaces_placeId(users.getUserId(), dto.getPlaceId()) == false) {
 
-            /** User Point 기존 값으로 초기화 **/
-            newReview.getUsers().initPoint(users.getPoints());
+            /** 첫리뷰 bonus point 처리 **/
+            //해당 placeId가 존재하지 않음
+            if (placeService.existCheck(dto.getPlaceId()) == false){
+                //장소 저장
+                PlaceResponseDto placeDto = new PlaceResponseDto(reviews.getPlaces());
+                placeService.save(placeDto);
 
-            /** 첫리뷰 보너스 point, place count 처리 **/
-            //만약 해당 장소 첫 리뷰라면
-            if (placeRepository.existsByPlaceId(dto.getPlaceId()) == false){
+                //리뷰에 보너스 점수 부여
+                reviews.increasePoint();
 
-                firstBonus(newReview);
+                //history 저장
+                HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), reviews.getUsers());
+                //historyService.save(historyDto);
 
             }
-            else{
+            else {
+                //해당 placeId가 존재하지만 리뷰는 없는 경우
+                if (reviewRepository.countByPlaces_placeId(dto.getPlaceId()) == 0){
+                    //보너스 점수 부여
+                    reviews.increasePoint();
 
-                Places places = placeRepository.findByPlaceId(dto.getPlaceId());
-
-                /** PlaceCount 기존 값으로 초기화 **/
-                newReview.getPlaces().initCount(places.getPlaceCount());
-
-                if (places.getPlaceCount() == 0){
-
-                    /** point 처리 **/
-                    newReview.increasePoint();
-                    newReview.getUsers().increasePoint();
-
+                    //history 저장
+                    HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
+                    //historyService.save(historyDto);
                 }
-
-                /** count 처리 **/
-                newReview.getPlaces().increaseCount();
             }
 
             /** 작성 point 처리 **/
             //내용 작성시
             if (dto.getContent() != null) {
-                newReview.increasePoint();
-                //users.increasePoint();
-                newReview.getUsers().increasePoint();
+                reviews.increasePoint();
+
+                //history 저장
+                HistoryRequestDto historyDto = new HistoryRequestDto("content", "increase1", dto.getReviewId(), users);
+                //historyService.save(historyDto);
             }
 
             //사진 추가시
             if (dto.getAttachedPhotoIds().size() > 1){
-                newReview.increasePoint();
-                //users.increasePoint();
-                newReview.getUsers().increasePoint();
+                reviews.increasePoint();
+
+                //history 저장
+                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
+                //historyService.save(historyDto);
             }
+
+            /** 해당 review point user에 적용 **/
+            reviews.getUsers().increasePoint(reviews.getPoint());
+            //users.increasePoint(reviews.getPoint());
 
 
             /** data 추가 **/
-            reviewRepository.save(newReview);
-            photoRepository.saveAll(dto.toEntityPhotoList(newReview));
+            reviewRepository.save(reviews);
+            photoService.saveAll(dto.toEntityPhotoList(reviews));
+
+        }
+        else{
+            msg = "이미 review를 작성한 place예요!";
+            return msg;
         }
 
-        else if (dto.getAction().trim().equals("MOD")){
+        msg = "ADD 성공";
+        return msg;
+    }
+
+    @Transactional
+    public String modReview(ReviewRequestDto dto){
+        String msg = null;
+
+        UserResponseDto userDto = userService.findUser(dto.getUserId());
+        Users users = userDto.toEntity();
+
+        Reviews reviews = dto.toEntityReviews(users.getPoints());
+
+        //해당 reviewId가 존재하는지
+        if (reviewRepository.existsByReviewId(dto.getReviewId()) == true){
 
             Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
-            Reviews newReviews = dto.toEntityReviews();
-
-            /** User Point 기존 값으로 초기화 **/
-            newReviews.getUsers().initPoint(users.getPoints());
-            /** Review Point 기존 값으로 초기화 **/
-            newReviews.initPoint();
-
 
             /** point 처리 **/
-            //사진 모두 삭제시 -1
-            if (dto.getAttachedPhotoIds().size() < 1){
+            //이전에 사진 있었으나 사진 아예 삭제한 경우
+            if (photoService.checkReview(dto.getReviewId()) == true && dto.getAttachedPhotoIds().size() < 1){
+                //리뷰 point, 유저 point 모두 -1
                 pastReviews.decreasePoint();
-                //pastReviews.getUsers().decreasePoint(1);
                 users.decreasePoint(1);
-                photoRepository.deleteInBatch(photoRepository.findAllByReviews_reviewId(dto.getReviewId()));
+
+                //history 저장
+                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "decrease1", dto.getReviewId(), users);
+                //historyService.save(historyDto);
+
+                //기존 사진 삭제
+                photoService.deletePhotos(dto.getReviewId());
             }
 
             //기존에 사진 없는 경우에 사진 추가시 +1
-            if (dto.getAttachedPhotoIds().size() > 0 && photoRepository.existsByReviews_reviewId(pastReviews.getReviewId()) == false){
+            if (photoService.checkReview(dto.getReviewId()) == false && dto.getAttachedPhotoIds().size() > 0){
+                //리뷰 point, 유저 point 모두 +1
                 pastReviews.increasePoint();
-                //pastReviews.getUsers().increasePoint();
-                users.increasePoint();
+                users.increasePoint(1);
+
+                //history 저장
+                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
+                //historyService.save(historyDto);
+
+                //새로운 사진 저장
+                photoService.saveAll(dto.toEntityPhotoList(reviews));
             }
 
+            /** 첫리뷰 bonus point 처리 **/
+            //해당 placeId가 존재하지 않음 && 기존에 보너스 받지 않음
+            if (placeService.existCheck(dto.getPlaceId()) == false && historyService.checkType(dto.getReviewId(), "bonus") == false){
+                //장소 저장
+                PlaceResponseDto placeDto = new PlaceResponseDto(reviews.getPlaces());
+                placeService.save(placeDto);
 
-            /** place data 수정 **/
-            //place 바뀌었다면 새로 지정
-            if (pastReviews.getPlaces().getPlaceId() != dto.getPlaceId()){
-                //기존 place -1
-                pastReviews.getPlaces().decreaseCount();
+                //리뷰에 보너스 점수 부여
+                reviews.increasePoint();
 
-                //new place가 새로운 place라면
-                if (placeRepository.existsByPlaceId(dto.getPlaceId()) == false) {
+                //history 저장
+                HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
+                //historyService.save(historyDto);
 
-                    /** 첫리뷰 보너스 point **/
-                    if (pastReviews.getPoint() < 3) {
-                        firstBonus(pastReviews);
-                    }
+            }
+            else {
+                //해당 placeId가 존재하지만 리뷰는 없는 경우 && 기존에 보너스 받지 않음
+                if (reviewRepository.countByPlaces_placeId(dto.getPlaceId()) == 0 && historyService.checkType(dto.getReviewId(), "bonus") == false){
+                    //보너스 점수 부여
+                    reviews.increasePoint();
 
-                    //placeRepository.save(new Places(dto.getPlaceId(), 1));
-
+                    //history 저장
+                    HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
+                    //historyService.save(historyDto);
                 }
-                else {
-
-                    Places places = placeRepository.findByPlaceId(dto.getPlaceId());
-
-                    /** PlaceCount 기존 값으로 초기화 **/
-                    newReviews.getPlaces().initCount(places.getPlaceCount());
-
-                    /** count 처리 **/
-                    newReviews.getPlaces().increaseCount();
-
-                }
-            }
-            //place가 같다면 기존 값으로 초기화
-            else{
-                Places places = placeRepository.findByPlaceId(dto.getPlaceId());
-                /** PlaceCount 기존 값으로 초기화 **/
-                newReviews.getPlaces().initCount(places.getPlaceCount());
             }
 
 
-            /** data 업데이트 **/
-            if (dto.toEntityPhotoList(newReviews).size() != 0) {
-                photoRepository.saveAll(dto.toEntityPhotoList(newReviews));
-            }
-
-            Reviews reviews = reviewRepository.getOne(dto.getReviewId());
-            reviews.update(newReviews.getContent(), newReviews.getPlaces());
+        }
+        else{
+            msg = "존재하지 않는 review예요!";
+            return msg;
         }
 
 
-        else if (dto.getAction().trim().equals("DELETE")){
 
-            Reviews reviews = reviewRepository.findByReviewId(dto.getReviewId());
+        msg = "MOD 성공";
+        return msg;
+    }
 
-            /** point 처리 **/
-            reviews.getUsers().decreasePoint(reviews.getPoint());
+    @Transactional
+    public String deleteReview(ReviewRequestDto dto){
+        String msg = null;
 
-            /** data 삭제 **/
-            //findBy 이미 사용되었으므로 delete로 사용
-            //reviewRepository.deleteByReviewId(dto.getReviewId());
-            reviewRepository.delete(reviews);
+        UserResponseDto userDto = userService.findUser(dto.getUserId());
+        Users users = userDto.toEntity();
+
+        Reviews reviews = dto.toEntityReviews(users.getPoints());
+
+
+        //해당 reviewId가 존재하는지
+        if (reviewRepository.existsByReviewId(dto.getReviewId()) == true){
+
+            Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
+
+            /** user point 처리 **/
+            reviews.getUsers().decreasePoint(pastReviews.getPoint());
+
+            /** pointhistory 처리 **/
+            //history 저장
+            HistoryRequestDto historyDto = new HistoryRequestDto("delete", "decrease" + Integer.toString(pastReviews.getPoint()), dto.getReviewId(), users);
+            //historyService.save(historyDto);
+
+            /** data 처리 : review 삭제 */
+            reviewRepository.delete(pastReviews);
 
         }
+        else{
+            msg = "존재하지 않는 review예요!";
+            return msg;
+        }
+
+        msg = "DELETE 성공";
+        return msg;
     }
 
-    public void firstBonus(Reviews reviews){
 
-        /** 새로운 place point 처리 **/
-        reviews.increasePoint();
-        reviews.getUsers().increasePoint();
-    }
 }

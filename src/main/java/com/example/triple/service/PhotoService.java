@@ -16,33 +16,19 @@ public class PhotoService {
 
     private final PhotoRepository photoRepository;
 
-    @Transactional
-    public void reviewEvent(ReviewRequestDto dto){
 
-        /*
-        if (dto.getAction().trim().equals("ADD")){
-
-            photoRepository.saveAll(dto.toEntityPhotoList());
-
-        }
-
-        else if (dto.getAction().trim().equals("MOD")){
-
-            //for(String ids : dto.getAttachedPhotoIds()){
-            for(Photos photos : dto.toEntityPhotoList()){
-                //사진의 아이디는 다 다르다고 가정
-                if (photoRepository.findByAttachedPhotoId(photos.getAttachedPhotoId()) == null){
-                    photoRepository.save(photos);
-                };
-            }
-        }
-
-        else if (dto.getAction().trim().equals("DELETE")){
-
-            photoRepository.deleteInBatch(photoRepository.findAllByReviewId(dto.getReviewId()));
-
-        }
-        */
+    public void saveAll(List<Photos> photos){
+        photoRepository.saveAll(photos);
     }
+
+    public boolean checkReview(String reviewId){
+        return photoRepository.existsByReviews_reviewId(reviewId);
+    }
+
+    public void deletePhotos(String reviewId){
+        List<Photos> photos = photoRepository.findAllByReviews_reviewId(reviewId);
+        photoRepository.deleteInBatch(photos);
+    }
+
 
 }

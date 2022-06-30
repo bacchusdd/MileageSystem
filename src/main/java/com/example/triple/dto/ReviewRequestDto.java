@@ -37,12 +37,13 @@ public class ReviewRequestDto {
         return "dto [reviewId=" + reviewId + ", photos=" + attachedPhotoIds + "]";
     }
 
-    public Reviews toEntityReviews(){
+    public Reviews toEntityReviews(int userPoint){
         return Reviews.builder()
                 .reviewId(reviewId)
                 .content(content)
-                .users(new Users(userId, Integer.MAX_VALUE))
-                .places(new Places(placeId, 1))
+                //.users(new Users(userId, userPoint))
+                .users(Users.builder().userId(userId).points(userPoint).build())
+                .places(Places.builder().placeId(placeId).build())
                 .point(0)
                 .build();
     }

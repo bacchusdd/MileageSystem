@@ -9,7 +9,6 @@ public class UserPointResponseDto {
     private int points;
 
     public UserPointResponseDto(Users entity){
-
         this.points = entity.getPoints();
     }
 

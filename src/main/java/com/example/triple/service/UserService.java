@@ -20,18 +20,20 @@ public class UserService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
 
-    // find user-data by userId
+
+    //find user-data by userId
     public UserResponseDto findUser (String userId){
         Users user = userRepository.findByUserId(userId);
 
         return new UserResponseDto(user);
     }
 
-    // find user-point by userId
+    //find user-point by userId
     public UserPointResponseDto findUserPoint (String userId){
         Users user = userRepository.findByUserId(userId);
 
         return new UserPointResponseDto(user);
     }
+
 
 }

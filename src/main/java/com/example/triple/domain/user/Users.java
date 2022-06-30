@@ -11,6 +11,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -18,11 +20,12 @@ import java.util.UUID;
 @Entity
 @Table(name = "user", indexes = @Index(name = "idx_userId", columnList = "userId"))
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Users {
+public class Users implements Serializable {
 
     @Id
     //@GeneratedValue(generator = "uuid2")
     //@GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name="userId")
     private String userId;
 
     @NotNull
@@ -35,8 +38,11 @@ public class Users {
         this.points = points;
     }
 
-    public void increasePoint(){
-        this.points += 1;
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Reviews> reviews;
+
+    public void increasePoint(int num){
+        this.points += num;
     }
 
     public void decreasePoint(int num){
@@ -51,5 +57,6 @@ public class Users {
     public void initPoint(int num){
         this.points = num;
     }
+
 
 }

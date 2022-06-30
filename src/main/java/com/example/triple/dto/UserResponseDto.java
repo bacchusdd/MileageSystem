@@ -18,4 +18,11 @@ public class UserResponseDto {
         this.points = entity.getPoints();
     }
 
+    public Users toEntity(){
+        return Users.builder()
+                .userId(userId)
+                .points(points)
+                .build();
+    }
+
 }

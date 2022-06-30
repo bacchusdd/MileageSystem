@@ -34,26 +34,29 @@ public class ReviewApiController {
     //@JsonProperty("requestDto")
     public BasicResponse reviewEvent(@RequestBody ReviewRequestDto dto){
 
-        System.out.println(dto.getType().trim());
+        //System.out.println(dto.getType().trim());
+        String msg;
+
         if(dto.getType().trim().equals("REVIEW")){
-            //System.out.println(dto.toString());
 
-            //review data 처리, point 처리
-            reviewService.reviewEvent(dto);
+            if (dto.getAction().trim().equals("ADD")){
+                //System.out.println("ADD");
+                msg = reviewService.addReview(dto);
+            }
+            else if (dto.getAction().trim().equals("MOD")){
+                msg = reviewService.modReview(dto);
+            }
+            else if (dto.getAction().trim().equals("DELETE")) {
+                msg = reviewService.deleteReview(dto);
+            }
+            else{
+                msg = "잘못된 action입니다!";
+            }
 
-            //photo data 처리
-            photoService.reviewEvent(dto);
-
-            //place data 처리
-            placeService.reviewEvent(dto);
-
-            return new CommonResponse(dto.getType(), dto.getAction(), dto);
-
+            return new CommonResponse(dto.getType(), dto.getAction(), msg);
         }
         else{
-
             return new ErrorResponse("리뷰 이벤트가 아닙니다!");
-
         }
     }
 }
