@@ -26,8 +26,9 @@ public class PhotoService {
     }
 
     public void deletePhotos(String reviewId){
-        List<Photos> photos = photoRepository.findAllByReviews_reviewId(reviewId);
-        photoRepository.deleteInBatch(photos);
+        //List<Photos> photos = photoRepository.findAllByReviews_reviewId(reviewId);
+        //photoRepository.deletea(photos);
+        photoRepository.deleteAllByReviews_reviewId(reviewId);
     }
 
 

@@ -34,7 +34,7 @@ public class Histories {
     private String reviewId;
 
     //1 user : many history
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 
@@ -42,7 +42,6 @@ public class Histories {
     public Histories(String type, String action, String reviewId, Users users){
         this.type = type;
         this.action = action;
-        //this.reviews = reviews;
         this.reviewId = reviewId;
         this.users = users;
     }

@@ -83,18 +83,24 @@ public class Reviews {
         this.users = users;
     }
 
-    /*
-    public void update(String content, String placeId) {
-        this.content = content;
-        this.placeId = placeId;
-    }
-     */
 
-    public void update(String content, Places places, int point){
+    public void update(String content, Places places, int point) {
         this.content = content;
         this.places = places;
         this.point = point;
     }
+
+
+    /*
+    public void update(Reviews reviews){
+        this.reviewId = reviews.getReviewId();
+        this.content = reviews.getContent();
+        this.places = reviews.getPlaces();
+        this.point = reviews.getPoint();
+        this.users = reviews.getUsers();
+    }
+
+     */
 
     public void increasePoint(){
         this.point += 1;

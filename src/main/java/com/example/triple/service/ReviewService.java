@@ -9,10 +9,7 @@ import com.example.triple.domain.reviewphoto.PhotoRepository;
 import com.example.triple.domain.reviewphoto.Photos;
 import com.example.triple.domain.user.UserRepository;
 import com.example.triple.domain.user.Users;
-import com.example.triple.dto.HistoryRequestDto;
-import com.example.triple.dto.PlaceResponseDto;
-import com.example.triple.dto.ReviewRequestDto;
-import com.example.triple.dto.UserResponseDto;
+import com.example.triple.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +50,8 @@ public class ReviewService {
                 reviews.increasePoint();
 
                 //history 저장
-                HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), reviews.getUsers());
-                //historyService.save(historyDto);
+                users = null;
+                historyService.save("bonus", "increase1", dto.getReviewId(), userDto);
 
             }
             else {
@@ -64,7 +61,7 @@ public class ReviewService {
                     reviews.increasePoint();
 
                     //history 저장
-                    HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
+                    //HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
                     //historyService.save(historyDto);
                 }
             }
@@ -75,18 +72,20 @@ public class ReviewService {
                 reviews.increasePoint();
 
                 //history 저장
-                HistoryRequestDto historyDto = new HistoryRequestDto("content", "increase1", dto.getReviewId(), users);
+                //HistoryRequestDto historyDto = new HistoryRequestDto("content", "increase1", dto.getReviewId(), users);
                 //historyService.save(historyDto);
             }
 
             //사진 추가시
             if (dto.getAttachedPhotoIds().size() > 0){
+                System.out.println("size + " + Integer.toString(dto.getAttachedPhotoIds().size()));
                 reviews.increasePoint();
 
                 //history 저장
-                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
+                //HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
                 //historyService.save(historyDto);
             }
+
 
             /** 해당 review point user에 적용 **/
             reviews.getUsers().increasePoint(reviews.getPoint());
@@ -117,18 +116,19 @@ public class ReviewService {
             UserResponseDto userDto = userService.findUser(dto.getUserId());
             Users users = userDto.toEntity();
 
-            Reviews pastReviews = reviewRepository.findByReviewId(dto.getReviewId());
-            Reviews reviews = dto.toEntityReviews(users.getPoints(), pastReviews.getPoint());
+            Reviews reviews = reviewRepository.findByReviewId(dto.getReviewId());
+            int pastpoint = reviews.getPoint();
+
+            reviews = dto.toEntityReviews(users.getPoints(), pastpoint);
 
             /** point 처리 **/
             //이전에 사진 있었으나 사진 아예 삭제한 경우
-            if (photoService.checkReview(dto.getReviewId()) == true && dto.getAttachedPhotoIds() == null){
+            if (photoService.checkReview(dto.getReviewId()) == true && dto.getAttachedPhotoIds().size() < 1){
                 //리뷰 point, 유저 point 모두 -1
                 reviews.decreasePoint();
-                reviews.getUsers().decreasePoint(1);
 
                 //history 저장
-                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "decrease1", dto.getReviewId(), users);
+                //HistoryRequestDto historyDto = new HistoryRequestDto("photo", "decrease1", dto.getReviewId(), users);
                 //historyService.save(historyDto);
 
                 //기존 사진 삭제
@@ -139,47 +139,52 @@ public class ReviewService {
             if (photoService.checkReview(dto.getReviewId()) == false && dto.getAttachedPhotoIds().size() > 0){
                 //리뷰 point, 유저 point 모두 +1
                 reviews.increasePoint();
-                reviews.getUsers().increasePoint(1);
 
                 //history 저장
-                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
+                //HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", dto.getReviewId(), users);
                 //historyService.save(historyDto);
 
-                //새로운 사진 저장
-                photoService.saveAll(dto.toEntityPhotoList(reviews));
             }
 
             /** 첫리뷰 bonus point 처리 **/
-            //해당 placeId가 존재하지 않음 && 기존에 보너스 받지 않음
-            if (placeService.existCheck(dto.getPlaceId()) == false && historyService.checkType(dto.getReviewId(), "bonus") == false){
-                //장소 저장
-                PlaceResponseDto placeDto = new PlaceResponseDto(reviews.getPlaces());
-                placeService.save(placeDto);
+            //기존에 보너스 받지 않음
+            //if (historyService.checkType(dto.getReviewId(), "bonus") == false){
+                //해당 placeId가 존재하지 않음
+                if (placeService.existCheck(dto.getPlaceId()) == false){
+                    //장소 저장
+                    PlaceResponseDto placeDto = new PlaceResponseDto(reviews.getPlaces());
+                    placeService.save(placeDto);
 
-                //리뷰에 보너스 점수 부여
-                reviews.increasePoint();
-                reviews.getUsers().increasePoint(1);
-
-                //history 저장
-                HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
-                //historyService.save(historyDto);
-
-            }
-            else {
-                //해당 placeId가 존재하지만 리뷰는 없는 경우 && 기존에 보너스 받지 않음
-                if (reviewRepository.countByPlaces_placeId(dto.getPlaceId()) == 0 && historyService.checkType(dto.getReviewId(), "bonus") == false){
-                    //보너스 점수 부여
+                    //리뷰에 보너스 점수 부여
                     reviews.increasePoint();
-                    reviews.getUsers().increasePoint(1);
 
                     //history 저장
-                    HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
+                    //HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
                     //historyService.save(historyDto);
-                }
-            }
 
-            //pastReviews.update(reviews.getContent(), reviews.getPlaces(), reviews.getPoint());
-            //reviews.update()
+                }
+                else {
+                    //해당 placeId가 존재하지만 리뷰는 없는 경우
+                    if (reviewRepository.countByPlaces_placeId(dto.getPlaceId()) == 0){
+                        //보너스 점수 부여
+                        reviews.increasePoint();
+
+                        //history 저장
+                        //HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", dto.getReviewId(), users);
+                        //historyService.save(historyDto);
+                    }
+                }
+            //}
+
+            /** 해당 review point user에 적용 **/
+            reviews.getUsers().increasePoint(reviews.getPoint());
+            reviews.getUsers().decreasePoint(pastpoint);
+
+
+            /** 데이터 처리 : 수정 **/
+            reviewRepository.save(reviews);
+            photoService.saveAll(dto.toEntityPhotoList(reviews));
+
 
         }
         else{
@@ -212,10 +217,10 @@ public class ReviewService {
 
             /** pointhistory 처리 **/
             //history 저장
-            HistoryRequestDto historyDto = new HistoryRequestDto("delete", "decrease" + Integer.toString(pastReviews.getPoint()), dto.getReviewId(), users);
+            //HistoryRequestDto historyDto = new HistoryRequestDto("delete", "decrease" + Integer.toString(pastReviews.getPoint()), dto.getReviewId(), users);
             //historyService.save(historyDto);
 
-            /** data 처리 : photos, review 삭제 */
+            /** data 처리 : photos & review 삭제 */
             //if (photoService.checkReview(dto.getReviewId()) == true) {
             //    photoService.deletePhotos(dto.getReviewId());
             //}
@@ -231,6 +236,5 @@ public class ReviewService {
         msg = "DELETE 성공";
         return msg;
     }
-
 
 }

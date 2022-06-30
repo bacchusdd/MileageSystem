@@ -38,9 +38,8 @@ public class Places {
     //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String address;
 
-    //@OneToMany(mappedBy = "places", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Reviews> reviews = new ArrayList<>();
-
+    @OneToMany(mappedBy = "places", cascade = CascadeType.ALL)
+    private List<Reviews> reviews;
 
     @Builder
     public Places(String placeId, String address){

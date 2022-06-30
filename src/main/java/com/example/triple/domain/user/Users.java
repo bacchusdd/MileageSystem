@@ -1,6 +1,7 @@
 package com.example.triple.domain.user;
 
 import com.example.triple.domain.place.Places;
+import com.example.triple.domain.pointhistory.Histories;
 import com.example.triple.domain.review.Reviews;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -40,6 +41,9 @@ public class Users implements Serializable {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Histories> histories;
 
     public void increasePoint(int num){
         this.points += num;

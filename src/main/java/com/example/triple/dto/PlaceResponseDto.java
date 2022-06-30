@@ -5,7 +5,6 @@ import com.example.triple.domain.place.Places;
 public class PlaceResponseDto {
 
     private String placeId;
-    private int placeCount;
 
     public PlaceResponseDto(Places entity){
         placeId = entity.getPlaceId();

@@ -9,6 +9,8 @@ public interface PhotoRepository extends JpaRepository<Photos, String> {
 
     List<Photos> findAllByReviews_reviewId(@Param(value = "reviewId") String reviewId);
 
+    void deleteAllByReviews_reviewId(@Param(value = "reviewId") String reviewId);
+
     Photos findByAttachedPhotoId(String photoId);
 
     boolean existsByReviews_reviewId(@Param(value = "reviewId") String reviewId);
