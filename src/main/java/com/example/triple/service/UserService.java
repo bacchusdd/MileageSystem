@@ -5,6 +5,7 @@ import com.example.triple.domain.review.Reviews;
 import com.example.triple.domain.user.UserRepository;
 import com.example.triple.domain.user.Users;
 import com.example.triple.dto.ReviewRequestDto;
+import com.example.triple.dto.UserPointResponseDto;
 import com.example.triple.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,13 @@ public class UserService {
         Users user = userRepository.findByUserId(userId);
 
         return new UserResponseDto(user);
+    }
+
+    // find user-point by userId
+    public UserPointResponseDto findUserPoint (String userId){
+        Users user = userRepository.findByUserId(userId);
+
+        return new UserPointResponseDto(user);
     }
 
 }

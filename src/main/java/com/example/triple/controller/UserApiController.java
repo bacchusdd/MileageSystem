@@ -3,6 +3,7 @@ package com.example.triple.controller;
 import com.example.triple.config.BasicResponse;
 import com.example.triple.config.CommonResponse;
 import com.example.triple.config.ErrorResponse;
+import com.example.triple.dto.UserPointResponseDto;
 import com.example.triple.dto.UserResponseDto;
 import com.example.triple.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,14 +28,14 @@ public class UserApiController {
     //public String getUserPoint(@RequestParam String userId){
     public BasicResponse getUserPoint(@RequestParam String userId){
 
-        UserResponseDto dto = userService.findUser(userId);
+        UserPointResponseDto dto = userService.findUserPoint(userId);
 
         if (dto == null){
             return new ErrorResponse("포인트 조회 실패!");
         }
-        int points = dto.getPoints();
+        //int points = dto.getPoints();
 
         //return Integer.toString(points);
-        return new CommonResponse("POINT", "GET", Integer.toString(points));
+        return new CommonResponse("POINT", "GET", dto);
     }
 }
