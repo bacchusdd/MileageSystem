@@ -40,10 +40,8 @@
 * 관계성
 * ERD
 * 전제사항
- 
-  (1) user는 이미 존재한다고 가정. 회원가입 단계에서 db에 추가되었을 것.
-   
-  (2) place 경우에는 존재하지 않을 수도 있다고 가정. user가 리뷰 작성 시 새로운 place를 추가할 수 있을 것으로 예상하고 진행.
+  * user는 이미 존재한다고 가정. 회원가입 단계에서 db에 추가되었을 것.
+  * place 경우에는 존재하지 않을 수도 있다고 가정. user가 리뷰 작성 시 새로운 place를 추가할 수 있을 것으로 예상하고 진행.
 
 
 
@@ -105,10 +103,11 @@
 * Springboot project run
 * Test
   
-  (1) project 실행
+  * project 실행
     *
   
-  (2) api test
+  
+  * api test
     * http://localhost:8080/swagger-ui.html로 접속
     * /events
     *
