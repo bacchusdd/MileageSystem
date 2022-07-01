@@ -53,7 +53,9 @@
 | PointHistories | GET | /points/userHistory/{userId} | 해당 user의 총 point history 조회 |
 | PointHistories | GET | /points/allHistory | 모든 point history 조회, paging 방식 |
 
-[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
+
+//[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
+
 
 ### "/events"
 * 시나리오
@@ -64,10 +66,10 @@
     |+| 내용 1자 이상 | type:content, action:increase1 |
     |+| 사진 1장 이상 | type:photo, action:increase1 |
     |+| 새로운 장소 리뷰 : 새로운 placeId인 경우 | type:bonus, action:increase1 | 
-    |+| 새로운 장소 리뷰 : 존재하는 placeId지만 해당 placeId 리뷰가 없는 경우 | ,, |
+    |+| 새로운 장소 리뷰 : 존재하는 placeId지만 해당 placeId 리뷰가 없는 경우 | type:bonus, action:increase1 |
     
       
-  * **MOD** : 모든 수정 사항은 DB에 적용됨 : 내용, 사진, 장소
+  * **MOD** : 모든 수정 사항 DB에 적용 (내용, 사진, 장소)
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
     |-| 해당 reviewId가 존재하지 않는다면 | "" 반환 |
@@ -81,7 +83,7 @@
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
     |-| 해당 reviewId가 존재하지 않는다면 | "" 반환 |
-    |+| | 해당 review 삭제, 해당 reviewId 갖는 photo들 삭제, type:delete, action:decrease'해당 리뷰로 얻은 포인트' |
+    |+| 모든 상황 | 해당 review 삭제, 해당 reviewId 갖는 photo들 삭제, type:delete, action:decrease'해당 리뷰로 얻은 포인트' |
     
       
 ### "/users/point/{userId}"
@@ -92,7 +94,8 @@
 
 ## 5. 프로젝트 상세 설명
 * 프로젝트 구조
-* 사용한 기능
+* 코드 설명 및 공부 내용
+  //[docs/Codedescription.md](docs/APIdescription.md) : Detailed descriptions for Code
 
 
 ## 6. 작동 방법
