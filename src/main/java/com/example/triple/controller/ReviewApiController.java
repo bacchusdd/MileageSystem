@@ -31,10 +31,8 @@ public class ReviewApiController {
 
     @ApiOperation(value="리뷰 이벤트", notes="ADD/MOD/DELETE 리뷰 이벤트 처리")
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    //@JsonProperty("requestDto")
     public BasicResponse reviewEvent(@RequestBody ReviewRequestDto dto){
 
-        //System.out.println(dto.getType().trim());
         String msg;
 
         if(dto.getType().trim().equals("REVIEW")){

@@ -1,6 +1,5 @@
 package com.example.triple.service;
 
-import com.example.triple.domain.pointhistory.Histories;
 import com.example.triple.domain.review.ReviewRepository;
 import com.example.triple.domain.review.Reviews;
 import com.example.triple.domain.reviewphoto.Photos;
@@ -51,7 +50,7 @@ public class ReviewService {
                 //Histories histories = new Histories("bonus", "increase1", reviews.getReviewId(), users);
                 //HistoryRequestDto historyDto = new HistoryRequestDto(histories);
                 Users temp = users;
-                HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", reviews.getReviewId(),
+                HistorySaveRequestDto historyDto = new HistorySaveRequestDto("bonus", "increase1", reviews.getReviewId(),
                                                         temp.getUserId(), temp.getPoints());
                 historyService.save(historyDto);
 
@@ -64,7 +63,7 @@ public class ReviewService {
 
                     //history 저장
                     Users temp = users;
-                    HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", reviews.getReviewId(),
+                    HistorySaveRequestDto historyDto = new HistorySaveRequestDto("bonus", "increase1", reviews.getReviewId(),
                                                     temp.getUserId(), temp.getPoints());
                     historyService.save(historyDto);
                 }
@@ -77,7 +76,7 @@ public class ReviewService {
 
                 //history 저장
                 Users temp = users;
-                HistoryRequestDto historyDto = new HistoryRequestDto("content", "increase1", reviews.getReviewId(),
+                HistorySaveRequestDto historyDto = new HistorySaveRequestDto("content", "increase1", reviews.getReviewId(),
                                                 temp.getUserId(), temp.getPoints());
                 historyService.save(historyDto);
             }
@@ -89,7 +88,7 @@ public class ReviewService {
 
                 //history 저장
                 Users temp = users;
-                HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", reviews.getReviewId(),
+                HistorySaveRequestDto historyDto = new HistorySaveRequestDto("photo", "increase1", reviews.getReviewId(),
                                                 temp.getUserId(), temp.getPoints());
                 historyService.save(historyDto);
             }
@@ -146,7 +145,7 @@ public class ReviewService {
 
                     //history 저장
                     Users temp = users;
-                    HistoryRequestDto historyDto = new HistoryRequestDto("photo", "decrease1", reviews.getReviewId(),
+                    HistorySaveRequestDto historyDto = new HistorySaveRequestDto("photo", "decrease1", reviews.getReviewId(),
                             temp.getUserId(), temp.getPoints());
                     historyService.save(historyDto);
 
@@ -161,7 +160,7 @@ public class ReviewService {
 
                     //history 저장
                     Users temp = users;
-                    HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", reviews.getReviewId(),
+                    HistorySaveRequestDto historyDto = new HistorySaveRequestDto("photo", "increase1", reviews.getReviewId(),
                             temp.getUserId(), temp.getPoints());
                     historyService.save(historyDto);
                 }
@@ -185,7 +184,7 @@ public class ReviewService {
 
                     //history 저장
                     Users temp = users;
-                    HistoryRequestDto historyDto = new HistoryRequestDto("bonus", "increase1", reviews.getReviewId(),
+                    HistorySaveRequestDto historyDto = new HistorySaveRequestDto("bonus", "increase1", reviews.getReviewId(),
                                                     temp.getUserId(), temp.getPoints());
                     historyService.save(historyDto);
 
@@ -198,7 +197,7 @@ public class ReviewService {
 
                         //history 저장
                         Users temp = users;
-                        HistoryRequestDto historyDto = new HistoryRequestDto("photo", "increase1", reviews.getReviewId(),
+                        HistorySaveRequestDto historyDto = new HistorySaveRequestDto("photo", "increase1", reviews.getReviewId(),
                                                         temp.getUserId(), temp.getPoints());
                         historyService.save(historyDto);
                     }
@@ -253,7 +252,7 @@ public class ReviewService {
             /** pointhistory 처리 **/
             //history 저장
             Users temp = users;
-            HistoryRequestDto historyDto = new HistoryRequestDto("delete", "decrease" + Integer.toString(pastReviews.getPoint()), reviews.getReviewId(),
+            HistorySaveRequestDto historyDto = new HistorySaveRequestDto("delete", "decrease" + Integer.toString(pastReviews.getPoint()), reviews.getReviewId(),
                                             temp.getUserId(), temp.getPoints());
             historyService.save(historyDto);
 

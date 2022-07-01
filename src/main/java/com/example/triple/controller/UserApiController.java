@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value="/events")
+@RequestMapping(value="/users")
 public class UserApiController {
 
     private final UserService userService;
@@ -31,10 +31,9 @@ public class UserApiController {
         UserPointResponseDto dto = userService.findUserPoint(userId);
 
         if (dto == null){
-            return new ErrorResponse("포인트 조회 실패!");
+            return new ErrorResponse("없는 회원입니다. 포인트 조회 실패!");
         }
         //int points = dto.getPoints();
-
         //return Integer.toString(points);
         return new CommonResponse("POINT", "GET", dto);
     }

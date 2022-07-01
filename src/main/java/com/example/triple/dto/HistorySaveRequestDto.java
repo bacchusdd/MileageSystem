@@ -7,9 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Getter
 @NoArgsConstructor
-public class HistoryRequestDto {
+public class HistorySaveRequestDto {
 
     private String type;
     private String action;
@@ -29,7 +31,7 @@ public class HistoryRequestDto {
      */
 
     @Builder
-    public HistoryRequestDto(String type, String action, String reviewId, String userId, int userPoint){
+    public HistorySaveRequestDto(String type, String action, String reviewId, String userId, int userPoint){
         this.type = type;
         this.action = action;
         this.reviewId = reviewId;

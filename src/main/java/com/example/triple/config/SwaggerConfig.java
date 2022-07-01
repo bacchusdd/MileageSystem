@@ -15,6 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
+
+import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
@@ -55,13 +58,15 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Docket commonApi() {
+    public Docket allApi() {
         return new Docket(DocumentationType.SWAGGER_2).consumes(getConsumeContentTypes())
                 .produces(getProduceContentTypes())
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/events/**"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.triple"))
+                //.paths(PathSelectors.ant("/events/**"))
+                .paths(PathSelectors.any())
                 .build();
     }
+
 }
