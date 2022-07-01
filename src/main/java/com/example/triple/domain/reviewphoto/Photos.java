@@ -26,7 +26,7 @@ public class Photos {
     //private String reviewId;
 
     //review 1 : photo many
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reviewId", referencedColumnName = "reviewId", columnDefinition="VARCHAR(36)")
     private Reviews reviews;
 

@@ -1,17 +1,9 @@
 package com.example.triple.service;
 
 import com.example.triple.domain.place.PlaceRepository;
-import com.example.triple.domain.place.Places;
-import com.example.triple.domain.review.ReviewRepository;
-import com.example.triple.domain.review.Reviews;
-import com.example.triple.domain.user.UserRepository;
-import com.example.triple.domain.user.Users;
-import com.example.triple.dto.PlaceResponseDto;
-import com.example.triple.dto.ReviewRequestDto;
+import com.example.triple.dto.PlaceSaveReqeustDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +20,7 @@ public class PlaceService {
         return placeRepository.countByPlaceId(placeId);
     }
 
-    public void save(PlaceResponseDto dto){
+    public void save(PlaceSaveReqeustDto dto){
         placeRepository.save(dto.toEntity());
     }
 

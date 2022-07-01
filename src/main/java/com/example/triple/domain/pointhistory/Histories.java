@@ -18,6 +18,7 @@ import javax.persistence.*;
 public class Histories {
 
     @Id
+    @Column(name = "pointId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointId;
 
@@ -34,7 +35,7 @@ public class Histories {
     private String reviewId;
 
     //1 user : many history
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 

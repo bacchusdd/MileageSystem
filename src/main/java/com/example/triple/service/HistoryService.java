@@ -17,13 +17,9 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
 
 
-    public void save(String type, String action, String reviewId, UserResponseDto userDto){
-        HistoryRequestDto dto = new HistoryRequestDto(type, action, reviewId, userDto.toEntity());
-        //Histories h = new Histories(type, action, reviewId, userDto.toEntity());
+    public void save(HistoryRequestDto dto){
         //historyRepository.save(dto.toEntity());
-        historyRepository.save(dto.toEntity());
-
-        //return dto;
+        historyRepository.save(dto.toEntity(dto.getUserId(), dto.getUserPoint()));
     }
 
 

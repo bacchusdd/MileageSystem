@@ -46,12 +46,12 @@ public class Reviews {
     private int point;
 
     //user 1 : review many
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 
     //user 1 : review many
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "placeId", referencedColumnName = "placeId", columnDefinition="VARCHAR(36)")
     private Places places;
 

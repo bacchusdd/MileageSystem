@@ -42,7 +42,7 @@ public class Users implements Serializable {
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.MERGE)
     private List<Histories> histories;
 
     public void increasePoint(int num){
