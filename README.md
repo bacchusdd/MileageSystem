@@ -156,12 +156,14 @@
   "result": "MOD 성공"
 }
 ```
+---
       
       
     * **회원 누적 포인트 조회**
       * user-api-controller -> "/uesers/points" 선택
       * Edit Value에 userId 추가
-      * 결과 예시
+---
+결과 예시
 ```json
 {
   "type": "USER HISTORY",
@@ -178,12 +180,14 @@
   ]
 }
 ```
+---
       
       
     * **회원 포인트 기록 조회**
       * history-api-controller -> "/pointhistories" 선택
       * Edit Value에 userId 추가
-      * 결과 예시
+---
+결과 예시
 ```json
 {
   "type": "POINT",
@@ -193,6 +197,9 @@
   }
 }
 ```
+---
+
+
     
 ## 7. 회고
 * 느낀점
