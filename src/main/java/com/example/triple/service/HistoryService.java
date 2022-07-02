@@ -1,16 +1,14 @@
 package com.example.triple.service;
 
-import com.example.triple.domain.pointhistory.Histories;
 import com.example.triple.domain.pointhistory.HistoryRepository;
 import com.example.triple.dto.HistorySaveRequestDto;
-import com.example.triple.dto.HistoryUserResponseDto;
+import com.example.triple.dto.HistoryResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +31,7 @@ public class HistoryService {
     }
 
     @Transactional
-    public List<HistoryUserResponseDto> findUserHistory(String userId){
+    public List<HistoryResponseDto> findUserHistory(String userId){
 
         /*
         List<HistoryUserResponseDto> historyList = new ArrayList<>();
@@ -45,8 +43,19 @@ public class HistoryService {
 
         return historyRepository.findByUsers_userId(userId)
                 .stream()
-                .map(HistoryUserResponseDto::new)
+                .map(HistoryResponseDto::new)
                 .collect(Collectors.toList());
 
     }
+
+    @Transactional
+    public List<HistoryResponseDto> findAllHistory(Pageable pageable){
+
+        return historyRepository.findAll(pageable)
+                .stream()
+                .map(HistoryResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 }

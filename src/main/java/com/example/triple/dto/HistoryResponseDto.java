@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
-public class HistoryUserResponseDto {
+public class HistoryResponseDto {
 
     private Long pointId;
     private String type;
@@ -19,7 +19,7 @@ public class HistoryUserResponseDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", locale = "Asia/Seoul")
     private LocalDateTime time;
 
-    public HistoryUserResponseDto(Histories entity){
+    public HistoryResponseDto(Histories entity){
         this.pointId = entity.getPointId();
         this.type = entity.getType();
         this.action = entity.getAction();
