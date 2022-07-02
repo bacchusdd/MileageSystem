@@ -136,7 +136,7 @@
     * **리뷰이벤트 처리**
       * review-api-controller -> "/events" 선택
       * Edit Value에 하단의 형식으로 test 값 추가
-'''json
+```json
 {
     "type": "REVIEW",
     "action": "ADD", /* "MOD", "DELETE" */
@@ -146,23 +146,23 @@
     "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
     "placeId": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
 }
-'''
+```
 
       * 결과 예시
-'''json
+```json
 {
   "type": "REVIEW",
   "action": "MOD",
   "result": "MOD 성공"
 }
-'''
+```
       
       
     * **회원 누적 포인트 조회**
       * user-api-controller -> "/uesers/points" 선택
       * Edit Value에 userId 추가
       * 결과 예시
-'''json
+```json
 {
   "type": "USER HISTORY",
   "action": "GET",
@@ -177,14 +177,14 @@
     }
   ]
 }
-'''
+```
       
       
     * **회원 포인트 기록 조회**
       * history-api-controller -> "/pointhistories" 선택
       * Edit Value에 userId 추가
       * 결과 예시
-'''json
+```json
 {
   "type": "POINT",
   "action": "GET",
@@ -192,7 +192,7 @@
     "points": 6
   }
 }
-'''
+```
     
 ## 7. 회고
 * 느낀점
