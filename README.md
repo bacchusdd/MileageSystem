@@ -56,9 +56,6 @@
 | Users | GET | /users/point?userId={userId} | 해당 user의 현재 총 point 조회 |
 | PointHistories | GET | /pointhistories/user?userId={userId} | 해당 user의 총 point history 조회 |
 | PointHistories | GET | /pointhistories/all?page={int}&size={int} | 모든 point history  조회, paging 방식 |
-
-
-//[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
 <br/>
 
 ### "/events"
@@ -213,7 +210,7 @@
       * 결과 예시
 ```json
 {
-  "type": "USER HISTORY",
+  "type": "ALL HISTORY",
   "action": "GET",
   "result": [
     {
