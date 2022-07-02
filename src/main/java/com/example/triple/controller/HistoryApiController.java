@@ -67,7 +67,7 @@ public class HistoryApiController {
 
         if (list.size() == 0) {
             //기록이 없는 경우
-            msg = "=point history 있는 user가 한 명도 없어요!";
+            msg = "더이상 point history가 없어요!";
             return new CommonResponse("ALL HISTORY", "GET", msg);
         }
         else {
