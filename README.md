@@ -54,8 +54,8 @@
 |---------|------|--------------------|--------------------------------------------|
 | Reviews | POST | /events | action에 따라 리뷰, 포인트 처리 |
 | Users | GET | /users/point?userId={userId} | 해당 user의 현재 총 point 조회 |
-| PointHistories | GET | /points/userHistory?userId={userId} | 해당 user의 총 point history 조회 |
-| PointHistories | GET | /points/allHistory | 모든 point history 조회, paging 방식 |
+| PointHistories | GET | /pointhistories/user?userId={userId} | 해당 user의 총 point history 조회 |
+| PointHistories | GET | /pointhistories/all | 모든 point history  조회, paging 방식 |
 
 
 //[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
@@ -96,21 +96,25 @@
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
     |-| 존재하지 않는 userId인 경우 | "없는 회원입니다. 포인트 조회 실패!" 반환 |
-    |+| 아직 포인트 이력이 없는 경우 | "아직 point history가 없어요!" 반환 |
-    |+| 그 외 상황 | point history list 반환 |
+    |+| 모든 상황 | 해당 회원 point 반환 |
     <br/>
   
-### "/points/userHistory?userId={userId}"
+### "/pointhistories/user?userId={userId}"
 * 시나리오
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
     |-| 존재하지 않는 userId인 경우 | "없는 회원입니다. 포인트 조회 실패!" 반환 |
-    |+| 모든 상황 | 해당 회원 point 반환 |
+    |+| 아직 포인트 이력이 없는 경우 | "아직 point history가 없어요!" 반환 |
+    |+| 그 외 상황 | point history list 반환 |
     <br/>
     
-### "/points/allHistory"
+### "/pointhistories/all"
+* 시나리오
+    |-|상황|처리|
+    |---|--------------------------------------|--------------------------------------------|
+    |+| 모든 상황 | 모든 회원의 모든 history 최신순으로 반환 |
+    <br/>
 
-<br/>
 
 ## 5. 프로젝트 상세 설명
 * 프로젝트 구조
@@ -169,6 +173,23 @@
       
 ```json
 {
+  "type": "POINT",
+  "action": "GET",
+  "result": {
+    "points": 6
+  }
+}
+```      
+
+      
+* * * **회원 포인트 기록 조회**
+      * history-api-controller -> "/pointhistories/user" 선택
+      * Edit Value에 userId 추가
+      * 결과 예시
+      
+
+```json
+{
   "type": "USER HISTORY",
   "action": "GET",
   "result": [
@@ -180,25 +201,15 @@
       "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
       "time": "2022-07-01 23:37:40"
     }
+    ...
   ]
 }
 ```   
-      
-* * * **회원 포인트 기록 조회**
-      * history-api-controller -> "/pointhistories" 선택
-      * Edit Value에 userId 추가
+
+
+* * * **모든 회원 포인트 기록 조회**
+      * history-api-controller -> "/pointhistories/all" 선택
       * 결과 예시
-      
-```json
-{
-  "type": "POINT",
-  "action": "GET",
-  "result": {
-    "points": 6
-  }
-}
-```
-<br/>
 
     
 ## 7. 회고
