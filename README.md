@@ -45,8 +45,8 @@
 * 전제사항
   * user는 이미 존재한다고 가정. 회원가입 단계에서 db에 추가되었을 것.
   * place 경우에는 존재하지 않을 수도 있다고 가정. user가 리뷰 작성 시 새로운 place를 추가할 수 있을 것으로 예상하고 진행.
-
-
+<br/>  
+  
 
 ## 4. API 상세 설명
 |DOMAIN|METHOD|URI|Description|
@@ -58,7 +58,7 @@
 
 
 //[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
-
+<br/>
 
 ### "/events"
 * 시나리오
@@ -81,15 +81,15 @@
     |+| 기존에 사진을 첨부했으나 현재는 사진이 없는 경우 | type:photo, action:decrease1, "MOD" 성공" 반환 |
     |+| 기존에 보너스 점수 받지 않음 & 바뀐 장소 새로운 placeId인 경우 | type:bonus, action:increase1, "MOD" 성공" 반환 |
     |+| 기존에 보너스 점수 받지 않음 & 바뀐 장소 존재 placeId지만 해당 placeId 리뷰가 없는 경우  | type:bonus, action:increase1, "MOD" 성공" 반환 |
-    
+    <br/>
     
   * **DELETE**
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
     |-| 해당 reviewId가 존재하지 않는다면 | "존재하지 않는 review예요!" 반환 |
     |+| 모든 상황 | 해당 review 삭제, 해당 reviewId 갖는 photo들 삭제, type:delete, action:decrease'해당 리뷰로 얻은 포인트', "DELETE 성공"  |
+    <br/>
     
-      
 ### "/users/point?userId={userId}"
 * 시나리오
     |-|상황|처리|
@@ -97,7 +97,7 @@
     |-| 존재하지 않는 userId인 경우 | "없는 회원입니다. 포인트 조회 실패!" 반환 |
     |+| 아직 포인트 이력이 없는 경우 | "아직 point history가 없어요!" 반환 |
     |+| 그 외 상황 | point history list 반환 |
-    
+    <br/>
   
 ### "/points/userHistory?userId={userId}"
 * 시나리오
@@ -105,17 +105,19 @@
     |---|--------------------------------------|--------------------------------------------|
     |-| 존재하지 않는 userId인 경우 | "없는 회원입니다. 포인트 조회 실패!" 반환 |
     |+| 모든 상황 | 해당 회원 point 반환 |
-    
+    <br/>
     
 ### "/points/allHistory"
 
-
+<br/>
 
 ## 5. 프로젝트 상세 설명
 * 프로젝트 구조
 * 코드 설명 및 공부 내용
   
   //[docs/Codedescription.md](docs/APIdescription.md) : Detailed descriptions for Code
+
+<br/>
 
 
 ## 6. 작동 방법
@@ -195,9 +197,11 @@
   }
 }
 ```
+<br/>
 
     
 ## 7. 회고
 * 느낀점
 * 궁금증 및 개선사항
   * /events API 요청에 type이나 action을 넣지 않고, 헤더 등으로 처리한다면 
+<br/>
