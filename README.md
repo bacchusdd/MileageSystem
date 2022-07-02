@@ -6,11 +6,9 @@
 > 트리플 사용자들이 장소에 리뷰를 작성할 때 포인트 부여,  
 > 전체/개인에 대한 포인트 부여 히스토리와
 > 개인별 누적 포인트 관리
-
-
-실행 방법 : https://github.com/bacchusdd/triple-mileage/tree/develop#6
-
-
+  
+[실행 방법 바로가기](https://github.com/bacchusdd/triple-mileage/tree/develop#6-작동-방법)  
+  
   
 ## 1. 개발환경
 * Java
