@@ -40,9 +40,9 @@
   
 
 ## 3. DB
+* ERD
 * 테이블
 * 관계성
-* ERD
 * 전제사항
   * user는 이미 존재한다고 가정. 회원가입 단계에서 db에 추가되었을 것.
   * place 경우에는 존재하지 않을 수도 있다고 가정. user가 리뷰 작성 시 새로운 place를 추가할 수 있을 것으로 예상하고 진행.
@@ -53,8 +53,8 @@
 |DOMAIN|METHOD|URI|Description|
 |---------|------|--------------------|--------------------------------------------|
 | Reviews | POST | /events | action에 따라 리뷰, 포인트 처리 |
-| Users | GET | /users/point/{userId} | 해당 user의 현재 총 point 조회 |
-| PointHistories | GET | /points/userHistory/{userId} | 해당 user의 총 point history 조회 |
+| Users | GET | /users/point?userId={userId} | 해당 user의 현재 총 point 조회 |
+| PointHistories | GET | /points/userHistory?userId={userId} | 해당 user의 총 point history 조회 |
 | PointHistories | GET | /points/allHistory | 모든 point history 조회, paging 방식 |
 
 
