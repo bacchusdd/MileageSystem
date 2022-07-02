@@ -89,8 +89,23 @@
     |+| 모든 상황 | 해당 review 삭제, 해당 reviewId 갖는 photo들 삭제, type:delete, action:decrease'해당 리뷰로 얻은 포인트', "DELETE 성공"  |
     
       
-### "/users/point/{userId}"
-### "/points/userHistory/{userId}"
+### "/users/point?userId={userId}"
+* 시나리오
+    |-|상황|처리|
+    |---|--------------------------------------|--------------------------------------------|
+    |-| 존재하지 않는 userId인 경우 | "없는 회원입니다. 포인트 조회 실패!" 반환 |
+    |+| 아직 포인트 이력이 없는 경우 | "아직 point history가 없어요!" 반환 |
+    |+| 그 외 상황 | point history list 반환 |
+    
+  
+### "/points/userHistory?userId={userId}"
+* 시나리오
+    |-|상황|처리|
+    |---|--------------------------------------|--------------------------------------------|
+    |-| 존재하지 않는 userId인 경우 | "없는 회원입니다. 포인트 조회 실패!" 반환 |
+    |+| 모든 상황 | 해당 회원 point 반환 |
+    
+    
 ### "/points/allHistory"
 
 
@@ -103,18 +118,73 @@
 
 
 ## 6. 작동 방법
-* Springboot project run
-* Test
-  
-  * project 실행
-    *
-  
-  
+* Springboot project 실행
+  * file directory path
+* Test  
+  * 전제 사항
+    * 저장된 user 목록 : (예시 userId)
+    * 저장된 place 목록 :
+    * 먼저 해당 user 중 하나의 userId로 review ADD 진행
+    * 그 이후 수정 및 삭제 진행, pointhistory 조회  
+    
   * api test
     * http://localhost:8080/swagger-ui.html 로 접속
-    * /events
-    *
+    * test 하고자 하는 controller -> api 선택
+    * "Try it out!" 버튼 클릭 후, Edit Value에 test 값 추가!
+    * 페이지에서 입력 형식 등 상세 설명 확인 가능
     
+    * **리뷰이벤트 처리**
+      * review-api-controller -> "/events" 선택
+      * Edit Value에 하단의 형식으로 test 값 추가
+'''
+{
+    "type": "REVIEW",
+    "action": "ADD", /* "MOD", "DELETE" */
+    "reviewId": "240a0658-dc5f-4878-9381-ebb7b2667772",
+    "content": "좋아요!",
+    "attachedPhotoIds": ["e4d1a64e-a531-46de-88d0-ff0ed70c0bb8", "afb0cef2-851d-4a50-bb07-9cc15cbdc332"],
+    "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+    "placeId": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
+}
+'''
+      * 결과 예시
+      
+      
+    * **회원 누적 포인트 조회**
+      * user-api-controller -> "/uesers/points" 선택
+      * Edit Value에 userId 추가
+      * 결과 예시
+'''
+{
+  "type": "USER HISTORY",
+  "action": "GET",
+  "result": [
+    {
+      "pointId": 7,
+      "type": "photo", 
+      "action": "decrease1",
+      "reviewId": "440a0658-dc5f-4878-9381-ebb7b2667712",
+      "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+      "time": "2022-07-01 23:37:40"
+    }
+  ]
+}
+'''
+      
+      
+    * **회원 포인트 기록 조회**
+      * history-api-controller -> "/pointhistories" 선택
+      * Edit Value에 userId 추가
+      * 결과 예시
+'''
+{
+  "type": "POINT",
+  "action": "GET",
+  "result": {
+    "points": 6
+  }
+}
+'''
     
 ## 7. 회고
 * 느낀점
