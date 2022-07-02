@@ -147,6 +147,7 @@
     "placeId": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
 }
 ```
+---
 
       * 결과 예시
 ```json
