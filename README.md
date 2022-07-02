@@ -7,7 +7,7 @@
 > 전체/개인에 대한 포인트 부여 히스토리와
 > 개인별 누적 포인트 관리
   
-[실행 방법 바로가기](https://github.com/bacchusdd/triple-mileage/tree/develop#6-작동-방법)  
+실행방법 -> 6번!
   
   
 ## 1. 개발환경
