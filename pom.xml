@@ -42,6 +42,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
+		<!-- for using swagger-ui -->
 		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -68,12 +69,15 @@
 			<version>3.0.0</version>
 		</dependency>
 
+		<!-- sring-boot-starter-web에 포함되어있는 dependency -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<!--
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.2.2</version>
 		</dependency>
+		-->
 
 		<!-- to simplify LocalDateTime -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->

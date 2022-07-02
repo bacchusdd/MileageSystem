@@ -7,8 +7,10 @@ import com.example.triple.domain.user.Users;
 import com.example.triple.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class ReviewService {
     private final HistoryService historyService;
 
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public String addReview(ReviewRequestDto dto){
         String msg = null;
 
@@ -32,6 +34,13 @@ public class ReviewService {
         Users users = userDto.toEntity();
 
         Reviews reviews = dto.toEntityReviews(users.getPoints(), 0);
+
+        //이미 존재하는 reviewId인지 확인
+        if (reviewRepository.existsByReviewId(dto.getReviewId()) == true){
+            msg = "이미 존재하는 리뷰 id예요!";
+            return msg;
+        }
+
 
         //해당 place에 review 작성 이력 있는지 확인
         if (reviewRepository.existsByUsers_userIdAndPlaces_placeId(users.getUserId(), dto.getPlaceId()) == false) {
@@ -119,7 +128,7 @@ public class ReviewService {
         return msg;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public String modReview(ReviewRequestDto dto){
         String msg = null;
 
@@ -232,7 +241,7 @@ public class ReviewService {
         return msg;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public String deleteReview(ReviewRequestDto dto){
         String msg = null;
 

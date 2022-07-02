@@ -3,7 +3,6 @@ package com.example.triple.domain.pointhistory;
 import com.example.triple.domain.BaseTimeEntity;
 import com.example.triple.domain.review.Reviews;
 import com.example.triple.domain.user.Users;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +23,7 @@ public class Histories extends BaseTimeEntity {
     @Column(name = "pointId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointId;
+
 
     /** msg : content/photo/bonus/delete **/
     @Column(name = "type")

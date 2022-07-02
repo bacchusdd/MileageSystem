@@ -8,6 +8,7 @@ import com.example.triple.dto.UserPointResponseDto;
 import com.example.triple.service.HistoryService;
 import com.example.triple.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -25,9 +26,10 @@ public class HistoryApiController {
     private final UserService userService;
 
 
-    @ApiOperation(value="user point history", notes="해당 user의 history list 조회")
+    @ApiOperation(value="Inquiry of user point history", notes="해당 user의 history list 조회")
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponse getUserHistories(@RequestParam String userId){
+    public BasicResponse getUserHistories(@ApiParam(value = "userId:UUID", required = true)
+                                              @RequestParam String userId){
         String msg;
 
         //없는 회원인 경우

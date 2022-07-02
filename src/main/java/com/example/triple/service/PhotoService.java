@@ -6,8 +6,10 @@ import com.example.triple.dto.PhotoSaveRequestDto;
 import com.example.triple.dto.ReviewRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class PhotoService {
     // photoRepository.saveAll(photos);
     //}
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
     public void saveAll(List<PhotoSaveRequestDto> dto){
         List<Photos> photos = new ArrayList<>();
         for (PhotoSaveRequestDto d : dto){
@@ -35,6 +38,8 @@ public class PhotoService {
         return photoRepository.existsByReviews_reviewId(reviewId);
     }
 
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED)
     public void deletePhotos(String reviewId){
         //List<Photos> photos = photoRepository.findAllByReviews_reviewId(reviewId);
         //photoRepository.deletea(photos);

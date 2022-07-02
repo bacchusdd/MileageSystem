@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+
 
 @Getter
 @NoArgsConstructor
@@ -18,12 +18,9 @@ import javax.persistence.*;
 public class Photos {
 
     @Id
-    //@GeneratedValue(generator="system-uuid")
-    //@GenericGenerator(name="system-uuid", strategy = "uuid")
+    @Column(name = "attachedPhotoId")
     private String attachedPhotoId;
 
-    //@Column(name = "reviewId")
-    //private String reviewId;
 
     //review 1 : photo many
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

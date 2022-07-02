@@ -6,11 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,13 +22,6 @@ public class Places {
     //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String placeId;
 
-    //@NotNull
-    //@Column(name = "placeCount")
-    //private int placeCount;
-
-    //@NotNull
-    //@Column(name = "placeCount")
-    //private int placeCount;
 
     @Column(name = "address", columnDefinition="VARCHAR(36)")
     private String address;
@@ -43,22 +33,6 @@ public class Places {
     public Places(String placeId, String address){
         this.placeId = placeId;
         this.address = address;
-        //this.placeCount = placeCount;
     }
-
-    /*
-    public void increaseCount(){
-        this.placeCount += 1;
-    }
-    public void decreaseCount(){
-        if (placeCount > 0) {
-            this.placeCount -= 1;
-        }
-    }
-
-    public void initCount(int count){
-        this.placeCount = count;
-    }
-     */
 
 }

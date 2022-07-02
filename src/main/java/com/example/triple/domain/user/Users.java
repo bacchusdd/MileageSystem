@@ -8,13 +8,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
+
 
 @Getter
 @NoArgsConstructor
@@ -24,10 +23,9 @@ import java.util.UUID;
 public class Users implements Serializable {
 
     @Id
-    //@GeneratedValue(generator = "uuid2")
-    //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name="userId")
     private String userId;
+
 
     @NotNull
     @Column(name = "points")

@@ -4,16 +4,14 @@ import com.example.triple.config.BasicResponse;
 import com.example.triple.config.CommonResponse;
 import com.example.triple.config.ErrorResponse;
 import com.example.triple.dto.UserPointResponseDto;
-import com.example.triple.dto.UserResponseDto;
 import com.example.triple.service.UserService;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,10 +21,11 @@ public class UserApiController {
 
     private final UserService userService;
 
-    @ApiOperation(value="회원 포인트 조회", notes="회원 ID로 포인트 조회")
+    @ApiOperation(value="Inquiry of user point", notes="회원 ID로 포인트 조회")
     @GetMapping(value="/points", produces= MediaType.APPLICATION_JSON_VALUE)
     //public String getUserPoint(@RequestParam String userId){
-    public BasicResponse getUserPoint(@RequestParam String userId){
+    public BasicResponse getUserPoint(@ApiParam(value = "userId:UUID", required = true)
+                                          @RequestParam String userId){
 
         UserPointResponseDto dto = userService.findUserPoint(userId);
 

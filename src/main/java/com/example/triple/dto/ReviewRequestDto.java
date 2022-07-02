@@ -4,6 +4,7 @@ import com.example.triple.domain.place.Places;
 import com.example.triple.domain.review.Reviews;
 import com.example.triple.domain.reviewphoto.Photos;
 import com.example.triple.domain.user.Users;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -12,12 +13,25 @@ import java.util.List;
 @Getter
 public class ReviewRequestDto {
 
+    @Schema(description = "type" , example = "REVIEW")
     private String type;
+
+    @Schema(description = "action" , example = "ADD/MOD/DELETE")
     private String action;
+
+    @Schema(description = "reviewId" , example = "UUID-type")
     private String reviewId;
+
+    @Schema(description = "content", example = "1자 이상 내용")
     private String content;
+
+    @Schema(description = "attachedPhotoIds", example = "UUID-type 형태 배열")
     private List<String> attachedPhotoIds;
+
+    @Schema(description = "userId" , example = "UUID-type")
     private String userId;
+
+    @Schema(description = "placeId" , example = "UUID-type")
     private String placeId;
 
     /*
