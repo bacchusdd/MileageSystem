@@ -55,7 +55,7 @@
 | Reviews | POST | /events | action에 따라 리뷰, 포인트 처리 |
 | Users | GET | /users/point?userId={userId} | 해당 user의 현재 총 point 조회 |
 | PointHistories | GET | /pointhistories/user?userId={userId} | 해당 user의 총 point history 조회 |
-| PointHistories | GET | /pointhistories/all | 모든 point history  조회, paging 방식 |
+| PointHistories | GET | /pointhistories/all?page={int}&size={int} | 모든 point history  조회, paging 방식 |
 
 
 //[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
@@ -108,7 +108,7 @@
     |+| 그 외 상황 | point history list 반환 |
     <br/>
     
-### "/pointhistories/all"
+### "/pointhistories/all?page={int}&size={int}"
 * 시나리오
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
@@ -209,7 +209,27 @@
 
 * * * **모든 회원 포인트 기록 조회**
       * history-api-controller -> "/pointhistories/all" 선택
+      * page, size에 숫자 입력
       * 결과 예시
+```json
+{
+  "type": "USER HISTORY",
+  "action": "GET",
+  "result": [
+    {
+      "pointId": 7,
+      "type": "photo", 
+      "action": "decrease1",
+      "reviewId": "440a0658-dc5f-4878-9381-ebb7b2667712",
+      "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+      "time": "2022-07-01 23:37:40"
+    }
+    ...
+  ]
+}
+```
+<br/>
+
 
     
 ## 7. 회고
