@@ -12,11 +12,12 @@
 <br/>
 
 ## 1. 개발환경
-* Java
-* Springboot
-* JPA
-* MySQL
-* Swagger-ui
+* Java 17
+* Springboot 2.6.4
+* Maven 3.6.3
+* Spring Data JPA 
+* MySQL 8.0.28
+* Swagger-ui 
 <br/>
 
 
