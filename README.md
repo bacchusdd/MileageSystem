@@ -147,7 +147,6 @@
     "placeId": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
 }
 ```
----
 
 * * * 결과 예시
 
@@ -157,8 +156,7 @@
   "action": "MOD",
   "result": "MOD 성공"
 }
-```
----      
+```    
       
 * * * **회원 누적 포인트 조회**
       * user-api-controller -> "/uesers/points" 선택
@@ -180,8 +178,7 @@
     }
   ]
 }
-```
----     
+```   
       
 * * * **회원 포인트 기록 조회**
       * history-api-controller -> "/pointhistories" 선택
@@ -197,7 +194,6 @@
   }
 }
 ```
----
 
     
 ## 7. 회고
