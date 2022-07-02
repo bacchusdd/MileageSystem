@@ -8,7 +8,7 @@
 > 개인별 누적 포인트 관리
 
 
-실행 방법 : https://github.com/bacchusdd/triple-mileage/tree/develop#6-%EC%9E%91%EB%8F%99-%EB%B0%A9%EB%B2%95
+실행 방법 : https://github.com/bacchusdd/triple-mileage/tree/develop#6
 
 
   
