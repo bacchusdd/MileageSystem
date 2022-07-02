@@ -110,7 +110,7 @@
   
   
   * api test
-    * http://localhost:8080/swagger-ui.html로 접속
+    * http://localhost:8080/swagger-ui.html 로 접속
     * /events
     *
     
