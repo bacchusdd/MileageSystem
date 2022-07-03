@@ -69,7 +69,7 @@
     |+| 사진 1장 이상 | type:photo, action:increase1, "ADD" 성공" 반환 |
     |+| 새로운 장소 리뷰 : 새로운 placeId인 경우 | type:bonus, action:increase1, "ADD" 성공" 반환 | 
     |+| 새로운 장소 리뷰 : 존재하는 placeId지만 해당 placeId 리뷰가 없는 경우 | type:bonus, action:increase1, "ADD" 성공" 반환 |
-    
+    <br/>
       
   * **MOD** : 모든 수정 사항 DB에 적용 (내용, 사진, 장소)
     |-|상황|처리|
