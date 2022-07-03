@@ -123,15 +123,19 @@
 
 
 ## 6. 작동 방법
+* 참고 사항
+  * ddl file은 resoureces 폴더에 ** schema.sql ** 로 존재
+  * 바로 실행 ** OR ** application.properties에서 6번줄 주석 처리, 11/12번줄 주석 해제 후 실행 가능
+  <br/>
 * Springboot project 실행
   * file directory path
+  <br/>
 * Test  
   * 전제 사항
-    * 저장된 user 목록 : (예시 userId)
-    * 저장된 place 목록 :
+    * 저장된 user 목록 : (예시)'3ede0ef2-92b7-4817-a5f3-0c575361f745', '05f5af06-fafa-11ec-a809-3c7c3fc20bf9', '46b805d8-fafa-11ec-a809-3c7c3fc20bf9'
+    * 저장된 place 목록 : (예시)'2e4baf1c-5acb-4efb-a1af-eddada31b00f', '261a0a74-fafa-11ec-a809-3c7c3fc20bf9'
     * 먼저 해당 user 중 하나의 userId로 review ADD 진행
-    * 그 이후 수정 및 삭제 진행, pointhistory 조회  
-    
+    <br/>
   * api test
     * http://localhost:8080/swagger-ui.html 로 접속
     * test 하고자 하는 controller -> api 선택
