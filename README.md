@@ -122,7 +122,7 @@
 <br/>
 
 
-## 6.  방법
+## 6. 실행 방법
 * 참고 사항
   * ddl file은 resoureces 폴더에 **schema.sql** 로 존재
   <br/>
