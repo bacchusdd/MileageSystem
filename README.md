@@ -55,10 +55,7 @@
 | Reviews | POST | /events | action에 따라 리뷰, 포인트 처리 |
 | Users | GET | /users/point?userId={userId} | 해당 user의 현재 총 point 조회 |
 | PointHistories | GET | /pointhistories/user?userId={userId} | 해당 user의 총 point history 조회 |
-| PointHistories | GET | /pointhistories/all | 모든 point history  조회, paging 방식 |
-
-
-//[docs/APIdescription.md](docs/APIdescription.md) : Detailed descriptions for API
+| PointHistories | GET | /pointhistories/all?page={int}&size={int} | 모든 point history  조회, paging 방식 |
 <br/>
 
 ### "/events"
@@ -72,7 +69,7 @@
     |+| 사진 1장 이상 | type:photo, action:increase1, "ADD" 성공" 반환 |
     |+| 새로운 장소 리뷰 : 새로운 placeId인 경우 | type:bonus, action:increase1, "ADD" 성공" 반환 | 
     |+| 새로운 장소 리뷰 : 존재하는 placeId지만 해당 placeId 리뷰가 없는 경우 | type:bonus, action:increase1, "ADD" 성공" 반환 |
-    
+    <br/>
       
   * **MOD** : 모든 수정 사항 DB에 적용 (내용, 사진, 장소)
     |-|상황|처리|
@@ -108,7 +105,7 @@
     |+| 그 외 상황 | point history list 반환 |
     <br/>
     
-### "/pointhistories/all"
+### "/pointhistories/all?page={int}&size={int}"
 * 시나리오
     |-|상황|처리|
     |---|--------------------------------------|--------------------------------------------|
@@ -126,15 +123,18 @@
 
 
 ## 6. 작동 방법
+* 참고 사항
+  * ddl file은 resoureces 폴더에 **schema.sql** 로 존재
+  <br/>
 * Springboot project 실행
-  * file directory path
+  * C:'file directory path'\target> java -jar triple-0.0.1-SNAPSHOT.jar
+  <br/>
 * Test  
   * 전제 사항
-    * 저장된 user 목록 : (예시 userId)
-    * 저장된 place 목록 :
+    * 저장된 user 목록 : (예시)'3ede0ef2-92b7-4817-a5f3-0c575361f745', '05f5af06-fafa-11ec-a809-3c7c3fc20bf9', '46b805d8-fafa-11ec-a809-3c7c3fc20bf9'
+    * 저장된 place 목록 : (예시)'2e4baf1c-5acb-4efb-a1af-eddada31b00f', '261a0a74-fafa-11ec-a809-3c7c3fc20bf9'
     * 먼저 해당 user 중 하나의 userId로 review ADD 진행
-    * 그 이후 수정 및 삭제 진행, pointhistory 조회  
-    
+    <br/>
   * api test
     * http://localhost:8080/swagger-ui.html 로 접속
     * test 하고자 하는 controller -> api 선택
@@ -209,11 +209,34 @@
 
 * * * **모든 회원 포인트 기록 조회**
       * history-api-controller -> "/pointhistories/all" 선택
+      * page, size에 숫자 입력
       * 결과 예시
+```json
+{
+  "type": "ALL HISTORY",
+  "action": "GET",
+  "result": [
+    {
+      "pointId": 7,
+      "type": "photo", 
+      "action": "decrease1",
+      "reviewId": "440a0658-dc5f-4878-9381-ebb7b2667712",
+      "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+      "time": "2022-07-01 23:37:40"
+    }
+    ...
+  ]
+}
+```
+<br/>
+
 
     
 ## 7. 회고
 * 느낀점
 * 궁금증 및 개선사항
-  * /events API 요청에 type이나 action을 넣지 않고, 헤더 등으로 처리한다면 
+  * /events API 요청에 type이나 action을 넣지 않고, 헤더 등으로 처리한다면?
+  * jpa 영속성?
+  * data.sql 적용 실패. 버전에 따라 다르다고 하나 정확히 왜 안되는지 ...
+  * ddl 없이 annotation만으로도 충분히 schema를 
 <br/>
