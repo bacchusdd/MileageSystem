@@ -7,7 +7,7 @@
 > 전체/개인에 대한 포인트 부여 히스토리와
 > 개인별 누적 포인트 관리
 <br/> 
-[실행방법 -> 6번!](https://github.com/bacchusdd/triple-mileage/tree/develop#6-%EC%9E%91%EB%8F%99-%EB%B0%A9%EB%B2%95)
+[실행 방법(6번)](https://github.com/bacchusdd/triple-mileage/tree/develop#6-%EC%9E%91%EB%8F%99-%EB%B0%A9%EB%B2%95)
 <br/>
 <br/>
 
@@ -122,7 +122,7 @@
 <br/>
 
 
-## 6. 작동 방법
+## 6.  방법
 * 참고 사항
   * ddl file은 resoureces 폴더에 **schema.sql** 로 존재
   <br/>
