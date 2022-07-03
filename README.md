@@ -238,5 +238,5 @@
   * /events API 요청에 type이나 action을 넣지 않고, 헤더 등으로 처리한다면?
   * jpa 영속성?
   * data.sql 적용 실패. 버전에 따라 다르다고 하나 정확히 왜 안되는지 ...
-  * ddl 없이 annotation만으로도 충분히 schema를 
+  * ddl 없이 annotation만으로도 충분히 schema를 생성할 수 있다
 <br/>
