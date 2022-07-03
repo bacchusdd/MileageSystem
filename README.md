@@ -124,11 +124,10 @@
 
 ## 6. 작동 방법
 * 참고 사항
-  * ddl file은 resoureces 폴더에 ** schema.sql ** 로 존재
-  * 바로 실행 ** OR ** application.properties에서 6번줄 주석 처리, 11/12번줄 주석 해제 후 실행 가능
+  * ddl file은 resoureces 폴더에 **schema.sql** 로 존재
   <br/>
 * Springboot project 실행
-  * file directory path
+  * C:'file directory path'\target> java -jar triple-0.0.1-SNAPSHOT.jar
   <br/>
 * Test  
   * 전제 사항
@@ -236,5 +235,8 @@
 ## 7. 회고
 * 느낀점
 * 궁금증 및 개선사항
-  * /events API 요청에 type이나 action을 넣지 않고, 헤더 등으로 처리한다면 
+  * /events API 요청에 type이나 action을 넣지 않고, 헤더 등으로 처리한다면?
+  * jpa 영속성?
+  * data.sql 적용 실패. 버전에 따라 다르다고 하나 정확히 왜 안되는지 ...
+  * ddl 없이 annotation만으로도 충분히 schema를 
 <br/>
