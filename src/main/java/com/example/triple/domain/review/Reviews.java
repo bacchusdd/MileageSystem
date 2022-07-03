@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Reviews {
 
     @Id
-    @Column(name = "reviewId")
+    @Column(name = "reviewId", length = 36)
     private String reviewId;
 
 
@@ -31,16 +32,19 @@ public class Reviews {
 
     @NotNull
     @Column(name = "point")
+    @ColumnDefault("0")
     private int point;
 
     //user 1 : review many
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_userId_review"),
+            name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 
     //user 1 : review many
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "placeId", referencedColumnName = "placeId", columnDefinition="VARCHAR(36)")
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_placeId_review"),
+            name = "placeId", referencedColumnName = "placeId", columnDefinition="VARCHAR(36)")
     private Places places;
 
     @OneToMany(mappedBy = "reviews", cascade = CascadeType.REMOVE)

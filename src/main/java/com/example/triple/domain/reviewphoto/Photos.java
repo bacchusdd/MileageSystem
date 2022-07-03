@@ -18,13 +18,14 @@ import javax.persistence.*;
 public class Photos {
 
     @Id
-    @Column(name = "attachedPhotoId")
+    @Column(name = "attachedPhotoId", length = 36)
     private String attachedPhotoId;
 
 
     //review 1 : photo many
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "reviewId", referencedColumnName = "reviewId", columnDefinition="VARCHAR(36)")
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_reviewId_photo"),
+            name = "reviewId", referencedColumnName = "reviewId", columnDefinition="VARCHAR(36)")
     private Reviews reviews;
 
     @Builder

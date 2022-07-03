@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name="pointhistory")
+@Table(name="pointhistory", indexes = @Index(name = "idx_point", columnList = "pointId"))
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Histories extends BaseTimeEntity {
 
@@ -34,7 +34,7 @@ public class Histories extends BaseTimeEntity {
     private String action;
 
     /** 연관된 리뷰 ID **/
-    @Column(name = "reviewId")
+    @Column(name = "reviewId", length = 36)
     private String reviewId;
 
     @Column(name = "createdDate")
@@ -42,7 +42,8 @@ public class Histories extends BaseTimeEntity {
 
     //1 user : many history
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_userId_history"),
+            name = "userId", referencedColumnName = "userId", columnDefinition="VARCHAR(36)")
     private Users users;
 
     @Builder

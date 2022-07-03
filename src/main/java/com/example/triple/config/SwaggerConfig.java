@@ -116,10 +116,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Setter
     @ApiModel
     static class Page {
-        @ApiModelProperty(value = "페이지 번호(0..N)")
+        @ApiModelProperty(value = "페이지 번호(0..N)", example = "1")
         private Integer page;
 
-        @ApiModelProperty(value = "페이지 크기", allowableValues="range[0, 100]")
+        @ApiModelProperty(value = "페이지 크기", allowableValues="range[0, 100]", example = "5")
         private Integer size;
 
     }

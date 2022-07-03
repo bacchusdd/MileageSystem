@@ -13,12 +13,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "place", indexes = @Index(name = "idx_placeId", columnList = "placeId"))
+@Table(name = "place", indexes = @Index(name = "idx_place", columnList = "placeId"))
 @JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Places {
 
     @Id
-    @Column(name = "placeId")
+    @Column(name = "placeId", length = 36)
     //@GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String placeId;
 
