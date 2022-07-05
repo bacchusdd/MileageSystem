@@ -41,7 +41,7 @@
 
 ## 3. DB
 * ERD
- * ![erd](https://user-images.githubusercontent.com/55009516/177242624-beb60e6f-930f-4903-9da2-37b780899fdb.PNG)
+ ![erd](https://user-images.githubusercontent.com/55009516/177242624-beb60e6f-930f-4903-9da2-37b780899fdb.PNG)
  * place에는 주소가 있다고 가정하고 address column 추가.
  * pointhistory에 관련된 reviewId는, review가 삭제되면 관계성에 따라 문제가 생길 것으로 판단, review table과 관계를 갖지 않고 같은 값의 독립된 column 생성.
 * 전제사항
