@@ -7,7 +7,7 @@
 > 전체/개인에 대한 포인트 부여 히스토리와
 > 개인별 누적 포인트 관리
 <br/> 
-[실행 방법](README.md#5-실행-방법)
+실행 방법 : 5
 <br/>
 <br/>
 
@@ -41,8 +41,9 @@
 
 ## 3. DB
 * ERD
-* 테이블
-* 관계성
+ * ![erd](https://user-images.githubusercontent.com/55009516/177242624-beb60e6f-930f-4903-9da2-37b780899fdb.PNG)
+ * place에는 주소가 있다고 가정하고 address column 추가.
+ * pointhistory에 관련된 reviewId는, review가 삭제되면 관계성에 따라 문제가 생길 것으로 판단, review table과 관계를 갖지 않고 같은 값의 독립된 column 생성.
 * 전제사항
   * user는 이미 존재한다고 가정. 회원가입 단계에서 db에 추가되었을 것.
   * place 경우에는 존재하지 않을 수도 있다고 가정. user가 리뷰 작성 시 새로운 place를 추가할 수 있을 것으로 예상하고 진행.
