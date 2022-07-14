@@ -1,9 +1,8 @@
-# triple-mileage
-*Assignment for 2022 TRIPLE BE recruitment*
+# mileage system
 
-**트리플 여행자 클럽 마일리지 서비스**
+**마일리지 서비스**
 
-> 트리플 사용자들이 장소에 리뷰를 작성할 때 포인트 부여,  
+> 사용자들이 장소에 리뷰를 작성할 때 포인트 부여,  
 > 전체/개인에 대한 포인트 부여 히스토리와
 > 개인별 누적 포인트 관리
 <br/> 
